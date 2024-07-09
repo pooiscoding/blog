@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"pooiscoding.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介紹 Balanced BST 和 RB-Tree 的概念，以及如何在 RB-Tree 上進行插入、刪除。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="平衡二元搜尋樹-紅黑樹 (Balanced Binary Search Tree - RB-Tree)">
+<meta property="og:url" content="https://pooiscoding.github.io/blog/2024/07/09/RBTree/index.html">
+<meta property="og:site_name" content="Poo&#39;s Blog">
+<meta property="og:description" content="介紹 Balanced BST 和 RB-Tree 的概念，以及如何在 RB-Tree 上進行插入、刪除。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-09T07:37:34.000Z">
+<meta property="article:modified_time" content="2024-07-09T13:22:46.156Z">
+<meta property="article:author" content="pooiscoding">
+<meta property="article:tag" content="Computer Science">
+<meta property="article:tag" content="Datastructure &amp; Algorithm">
+<meta property="article:tag" content="Tree">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://pooiscoding.github.io/blog/2024/07/09/RBTree/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>平衡二元搜尋樹-紅黑樹 (Balanced Binary Search Tree - RB-Tree) | Poo's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Poo's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://pooiscoding.github.io/blog/2024/07/09/RBTree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/McrVyGM.jpg">
+      <meta itemprop="name" content="pooiscoding">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Poo's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          平衡二元搜尋樹-紅黑樹 (Balanced Binary Search Tree - RB-Tree)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-07-09 15:37:34 / Modified: 21:22:46" itemprop="dateCreated datePublished" datetime="2024-07-09T15:37:34+08:00">2024-07-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/" itemprop="url" rel="index"><span itemprop="name">Computer Science</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/Datastructure-Algorithm/" itemprop="url" rel="index"><span itemprop="name">Datastructure & Algorithm</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/Datastructure-Algorithm/Lecture-Note/" itemprop="url" rel="index"><span itemprop="name">Lecture Note</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">介紹 Balanced BST 和 RB-Tree 的概念，以及如何在 RB-Tree 上進行插入、刪除。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="使用原因"><a href="#使用原因" class="headerlink" title="使用原因"></a>使用原因</h2><p>在資訊領域的問題中，時常會有情境需要維護一個”字典”的資料結構。字典指的是一種讓我們可以把一個 key 和一筆資料連結在一起處理的資料結構。我們可以透過搜尋 key 來索引這筆存進去的資料。同時，這個資料結構常常(非必要)會需要支援動態的加資料進去與把資料刪除。</p>
+<p>一個常見的字典實作方式是使用 BST(Binary Search Tree)。我們得利於 BST 之結構，可以快速地在樹中找到我們目標的 key ，進而存取資料進行後續操作。更實際的來說， BST 在樹沒有長歪的前提下，可以讓 insert, delete, search 這三個常見的字典操作，時間複雜度為 $O(lg(n))$ ，其中 $n$ 是資料個數。</p>
+<p>但是上述如此優秀的時間複雜度僅存在於樹沒有長歪的前提下，正確來說正常實作的 BST 字典，insert, delete, search 一個 key 的時間複雜度會和樹的總高度有關。更精準地說，在最直觀的實作中，這三個常見的操作，時間複雜度都會是 $O(h)$ ，其中 $h$ 指的是樹高。</p>
+<p>那麼為什麼會有長歪的情況，什麼又是長歪呢? 以 insert 這個操作為例，在最一般的實作中，我們就是搜索這個 key 應該要在樹中的位置，再將 key 和資料插入樹中。插入 key 進入這個字典的排序，會影響樹的高度。</p>
+<p>舉例而言，當我們插入 4 個 key ， 1, 2, 3, 4 進入某個 BST 中。<br>順序是 4, 3, 2, 1 時，樹會長得像:</p>
+<pre class="mermaid">graph TD;
+4 --> 3;
+4 --> NIL4;
+3 --> 2;
+3 --> NIL3;
+2 --> 1;
+2 --> NIL2;</pre>
+
+<blockquote>
+<p>NIL# 僅為為了標示左右子樹用的空節點，不具實際意義</p>
+</blockquote>
+<p>順序是 2, 1, 3, 4 時，樹會長得像:</p>
+<pre class="mermaid">graph TD;
+2 --> 1;
+2 --> 3;
+3 --> NIL3;
+3 --> 4;</pre>
+
+<p>可以看到樹的高度，會受到 key 的 insert 順序影響。並且在最糟的情況下，BST 會退化成一個 linked list，也可以說是一根樹枝。在最糟的情況下，樹高會是 $\theta(n)$。</p>
+<p>也就是說，實際上單純使用 BST 實作字典，會讓這三種常見的操作，時間複雜度為 $O(n)$。跟實作起來更簡單的 linked list 一模一樣，那麼難道使用 Binary Tree 的結構來儲存資料真的如此不堪嗎?</p>
+<p>為了更好的利用 BST 的特性，也就是在單次比較中去除一半的可能性，讓整體查找時間的複雜度控制在 $O(lg(n))$ 。我們希望透過某些手段，控制樹的樹高，讓他不要變成樹枝，也就是<strong>平衡</strong>一點。</p>
+<p>因此，我們需要使用自平衡樹這類的資料結構，來實做我們的 BST。</p>
+<h2 id="常見操作-旋轉"><a href="#常見操作-旋轉" class="headerlink" title="常見操作 旋轉"></a>常見操作 旋轉</h2><p>為了維護樹的平衡，在平衡二元搜尋樹的資料結構中，常常會需要做一些額外的操作，讓樹變得平衡。其中一個常見的作法，是讓樹在被偵測到長傾斜時，向傾斜的反方向旋轉。藉由改變樹的結構，讓樹重新回歸平衡。</p>
+<p>改變結構當然會改變某些樹的性質，但我們希望我們所關注的重要性質不要改變，讓我們能繼續從樹的結構中獲得一些好處。</p>
+<p>在 BST 中，我們希望在旋轉前後，對於所有節點，其左子樹中的所有 key 會小於該節點的 key ，右子樹中的所有 key 會大於該節點的 key 。也就是希望旋轉後仍然維持 BST 的特色，因此仍然可以用此樹來進行快速的資料查找。</p>
+<blockquote>
+<p>在維護好的 BST 中做中序遍歷 (inorder traversal) ，其序列會是將所有 key 由小到大排序的結果，因此旋轉前後中序遍歷不會改變。但前序、後序則沒有保證不變。<br>我們可以利用中序遍歷不變的性質來思考旋轉後的樹的樣子。</p>
+</blockquote>
+<h3 id="樹節點儲存資訊定義"><a href="#樹節點儲存資訊定義" class="headerlink" title="樹節點儲存資訊定義"></a>樹節點儲存資訊定義</h3><p>為方便溝通，這裡定義了接下來的 c code 中，一個樹上的節點會儲存什麼資訊。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">l</span>, *<span class="title">r</span>;</span> <span class="comment">// 左子樹, 右子樹</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">p</span>;</span> <span class="comment">// 父節點</span></span><br><span class="line">    <span class="type">int</span> key; <span class="comment">// key</span></span><br><span class="line">&#125; Node;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tree</span>&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">root</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">NIL</span>;</span></span><br><span class="line">&#125; Tree;</span><br></pre></td></tr></table></figure>
+
+<h3 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a>左旋</h3><pre class="mermaid">graph TD;
+A --> B;
+A --> C;
+C --> D;
+C --> E;</pre>
+
+<p>對 A 節點進行左旋操作後，</p>
+<pre class="mermaid">graph TD;
+C --> A;
+A --> B;
+A --> D;
+C --> E;</pre>
+
+<blockquote>
+<p>可以注意到兩棵樹的中序搜尋都會是 BADCE。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">left_rotate</span><span class="params">(Tree *T, Node *x)</span>&#123;</span><br><span class="line">    <span class="comment">// 找到右邊節點(轉上去的點)方便後續操作</span></span><br><span class="line">    Node* newParent = x-&gt;r;</span><br><span class="line">    <span class="comment">// 先把要轉下去的點的資訊交代清楚</span></span><br><span class="line">    <span class="comment">// 1. 要轉下去的獲得新的小孩</span></span><br><span class="line">    x-&gt;r = newParent-&gt;l;</span><br><span class="line">    <span class="keyword">if</span> (newParent-&gt;l != T-&gt;NIL)&#123;</span><br><span class="line">        newParent-&gt;l-&gt;p = x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2. 處理要轉上去點的父親關係</span></span><br><span class="line">    newParent-&gt;p = x-&gt;p;</span><br><span class="line">    <span class="keyword">if</span> (x-&gt;p == T-&gt;NIL)&#123; <span class="comment">// x 是 root</span></span><br><span class="line">        T-&gt;root = newParent;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (x == x-&gt;p-&gt;l)&#123;</span><br><span class="line">        x-&gt;p-&gt;l = newParent;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        x-&gt;p-&gt;r = newParent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最後處理旋轉前後的兩個點的連結改變</span></span><br><span class="line">    newParent-&gt;l = x;</span><br><span class="line">    x-&gt;p = newParent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a>右旋</h3><pre class="mermaid">graph TD;
+A --> B;
+A --> E;
+B --> C;
+B --> D;</pre>
+
+<p>對 A 節點進行右旋操作後，</p>
+<pre class="mermaid">graph TD;
+B --> C;
+B --> A;
+A --> D;
+A --> E;</pre>
+
+<blockquote>
+<p>可以注意到兩棵樹的中序搜尋都會是 CBDAE。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">right_rotate</span><span class="params">(Tree *T, Node *x)</span>&#123;</span><br><span class="line">    <span class="comment">// 找到左邊節點(轉上去的點)方便後續操作</span></span><br><span class="line">    Node* newParent = x-&gt;l;</span><br><span class="line">    <span class="comment">// 先把要轉下去的點的資訊交代清楚</span></span><br><span class="line">    <span class="comment">// 1. 要轉下去的獲得新的小孩</span></span><br><span class="line">    x-&gt;l = newParent-&gt;r;</span><br><span class="line">    <span class="keyword">if</span> (newParent-&gt;r != T-&gt;NIL)&#123;</span><br><span class="line">        newParent-&gt;r-&gt;p = x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2. 處理要轉上去點的父親關係</span></span><br><span class="line">    newParent-&gt;p = x-&gt;p;</span><br><span class="line">    <span class="keyword">if</span> (x-&gt;p == T-&gt;NIL)&#123; <span class="comment">// x 是 root</span></span><br><span class="line">        T-&gt;root = newParent;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (x == x-&gt;p-&gt;l)&#123;</span><br><span class="line">        x-&gt;p-&gt;l = newParent;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        x-&gt;p-&gt;r = newParent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最後處理旋轉前後的兩個點的連結改變</span></span><br><span class="line">    newParent-&gt;r = x;</span><br><span class="line">    x-&gt;p = newParent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="紅黑樹-RB-Tree"><a href="#紅黑樹-RB-Tree" class="headerlink" title="紅黑樹 (RB-Tree)"></a>紅黑樹 (RB-Tree)</h2><p>紅黑樹就是一種平衡的二元搜尋樹，透過在樹上節點標上顏色，並且遵從以下幾條規則，來實現樹的平衡，控制樹的高度。</p>
+<blockquote>
+<p>通常紅黑樹會用 extended binary tree 來實作，也就是在所有沒有小孩的地方，接上 NIL 這個接地的節點。</p>
+</blockquote>
+<ul>
+<li>樹上節點，不是黑色，就是紅色</li>
+<li>根節點必為黑色</li>
+<li>NIL 節點必為黑色</li>
+<li><strong>紅色節點不能連續兩個出現</strong> &#x2F; <strong>紅色節點小孩必為黑色</strong></li>
+<li><strong>所有節點的 bh 唯一</strong> &#x2F; <strong>所有節點從自己走到 NIL 的任一條路徑，經過黑色節點數均相同</strong></li>
+</ul>
+<blockquote>
+<ol>
+<li>bh 是 black height，表示從自己(不含) 走到葉節點 NIL (含)，所經過的黑色節點數。</li>
+<li>黑色節點可以連續出現。</li>
+</ol>
+</blockquote>
+<p style="color: #AAA">Remark. 紅色節點的性質 4 是用來控制插入導致的不平衡。黑色節點的性質 5 是用來控制刪除導致的不平衡。</p>
+
+<h3 id="平衡性的確保-證明"><a href="#平衡性的確保-證明" class="headerlink" title="平衡性的確保(證明)"></a>平衡性的確保(證明)</h3><h4 id="引理-1-node-x-底下的-subtree-最少有-2-bh-x-1-個節點-含-x"><a href="#引理-1-node-x-底下的-subtree-最少有-2-bh-x-1-個節點-含-x" class="headerlink" title="引理 1. node x 底下的 subtree 最少有 $2^{bh(x)}-1$ 個節點 (含 x)"></a>引理 1. node x 底下的 subtree 最少有 $2^{bh(x)}-1$ 個節點 (含 x)</h4><p>Proof. 歸納法</p>
+<p>當 x 為葉節點 NIL 時，$bh(x)&#x3D;0$。因為 NIL 是虛擬的所以不算是節點，所領導的 subtree 節點數是 $0&#x3D;2^{bh(x)}-1$，成立。</p>
+<p>假設對於某個並非葉節點的 x ，此引理對於其兩個小孩均成立，<br>(Note: 由於討論的是 extended binary tree，所有非葉節點 NIL 的節點，均有兩個小孩)</p>
+<p>則對於 x 底下的 subtree，由於其兩個小孩不是黑的就是紅的(性質 1)，其 bh 不是 $bh(x)-1$ (黑的)，就是 $bh(x)$ (紅的) (性質 5)。因此兩個小孩底下的 subtree，各自最少會有 $2^{bh(x)-1}-1$ 個節點。<br>x 底下的 subtree，則最少會有 $(2^{bh(x)-1}-1)+(2^{bh(x)-1}-1)+1&#x3D;2^{bh(x)}-1$ 個節點，成立。</p>
+<p>因此由數學歸納法，此引理成立。</p>
+<h4 id="引理-2-對任意所在高度為-h-的節點-x，-bh-x-geq-h-2"><a href="#引理-2-對任意所在高度為-h-的節點-x，-bh-x-geq-h-2" class="headerlink" title="引理 2. 對任意所在高度為 h 的節點 x，$bh(x)\geq h&#x2F;2$"></a>引理 2. 對任意所在高度為 h 的節點 x，$bh(x)\geq h&#x2F;2$</h4><p>高度為 h 代表從該節點(不含)到葉節點(含)，存在一條路徑其經過的節點數是 h。若要讓 $bh(x)$ 最小，則該路徑上的紅節點數最多，又紅節點不能連續出現 (性質 4)，葉節點 NIL 必為黑色，因此 $bh(x) \geq \lceil h&#x2F;2 \rceil \geq h&#x2F;2$ 。</p>
+<h4 id="定理-n-個節點的紅黑樹樹高不會超過-2lg-n-1"><a href="#定理-n-個節點的紅黑樹樹高不會超過-2lg-n-1" class="headerlink" title="定理. n 個節點的紅黑樹樹高不會超過 $2lg(n+1)$"></a>定理. n 個節點的紅黑樹樹高不會超過 $2lg(n+1)$</h4><p>對根節點 r 使用引理 1. 可得 $n \geq 2^{bh(r)}-1$，在使用引理 2. 可得 $bh(r)\geq h&#x2F;2$，其中 h 為樹高。<br>結合二者可得 $n \geq 2^{bh(r)}-1 \geq 2^{h&#x2F;2}-1$，經過整理可得 $h \leq 2lg(n+1)$ 。</p>
+<p style="color: #AAA">Remark. 也就是說，樹高的成長為 $O(lg(n))$，滿足了我們要求的控制樹高，以讓他平衡一點。</p>
+
+<h3 id="紅黑樹節點儲存資訊定義"><a href="#紅黑樹節點儲存資訊定義" class="headerlink" title="紅黑樹節點儲存資訊定義"></a>紅黑樹節點儲存資訊定義</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Color</span> &#123;</span></span><br><span class="line">    BLACK, RED</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">l</span>, *<span class="title">r</span>;</span> <span class="comment">// 左子樹, 右子樹</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">p</span>;</span> <span class="comment">// 父節點</span></span><br><span class="line">    <span class="type">int</span> key; <span class="comment">// key</span></span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">Color</span> <span class="title">color</span>;</span> <span class="comment">// 節點顏色</span></span><br><span class="line">&#125; Node;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tree</span>&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">root</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">NIL</span>;</span></span><br><span class="line">&#125; Tree;</span><br></pre></td></tr></table></figure>
+
+<h3 id="紅黑樹上查詢"><a href="#紅黑樹上查詢" class="headerlink" title="紅黑樹上查詢"></a>紅黑樹上查詢</h3><p>就是一般的 BST 上查找。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// recurrsive manner</span></span><br><span class="line">Node* <span class="title function_">search</span><span class="params">(Tree *T, Node *x, <span class="type">int</span> key)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x == T-&gt;NIL) <span class="keyword">return</span> T-&gt;NIL;</span><br><span class="line">    <span class="keyword">if</span> (key == x-&gt;key) <span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">if</span> (key &gt; x-&gt;key) <span class="keyword">return</span> search(T, x-&gt;r, key);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> search(T, x-&gt;l, key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iterative manner</span></span><br><span class="line">Node* <span class="title function_">search</span><span class="params">(Tree *T, <span class="type">int</span> key)</span>&#123;</span><br><span class="line">    Node* cursor = T-&gt;root;</span><br><span class="line">    <span class="keyword">while</span> (cursor != T-&gt;NIL &amp;&amp; cursor-&gt;key != key)&#123;</span><br><span class="line">        <span class="keyword">if</span> (key &gt; cursor-&gt;key)</span><br><span class="line">            cursor = cursor-&gt;r;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            cursor = cursor-&gt;l;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cursor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>輕鬆愜意又簡單，</p>
+<p>因為沒有對樹進行任何改動，不需要擔心任何事。</p>
+<h3 id="紅黑樹上插入"><a href="#紅黑樹上插入" class="headerlink" title="紅黑樹上插入"></a>紅黑樹上插入</h3><blockquote>
+<p>much more trickier</p>
+</blockquote>
+<h4 id="BST-上插入"><a href="#BST-上插入" class="headerlink" title="BST 上插入"></a>BST 上插入</h4><p>我們透過類似 search 的方法找到 key 應該要在哪個位置，在該位置上新增一個節點即可。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">Node* <span class="title function_">newNode</span><span class="params">(Node* l, Node* r, Node* p, <span class="type">int</span> key, <span class="keyword">enum</span> Color color)</span>&#123;</span><br><span class="line">    Node* node = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">    node-&gt;l = l, node-&gt;r = r, node-&gt;p = p, node-&gt;key = key, node-&gt;color = color;</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Node* <span class="title function_">BST_insert</span><span class="params">(Tree *T, <span class="type">int</span> key)</span>&#123;</span><br><span class="line">    Node* node = newNode(T-&gt;NIL, T-&gt;NIL, T-&gt;NIL, key, RED);</span><br><span class="line">    <span class="keyword">if</span> (T-&gt;root == T-&gt;NIL)&#123; <span class="comment">// 樹為空</span></span><br><span class="line">        T-&gt;root = node;</span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">    &#125;</span><br><span class="line">    Node *x = T-&gt;NIL, *cursor = T-&gt;root;</span><br><span class="line">    <span class="comment">// 找到要插入的地方 (插在 x 的子代)</span></span><br><span class="line">    <span class="keyword">while</span> (cursor != T-&gt;NIL)&#123;</span><br><span class="line">        <span class="keyword">if</span> (key &gt; cursor-&gt;key)&#123;</span><br><span class="line">            x = cursor;</span><br><span class="line">            cursor = cursor-&gt;r;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            x = cursor;</span><br><span class="line">            cursor = cursor-&gt;l;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 插入</span></span><br><span class="line">    <span class="keyword">if</span> (key &gt; x-&gt;key)&#123;</span><br><span class="line">        x-&gt;r = node;</span><br><span class="line">        node-&gt;p = x;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        x-&gt;l = node;</span><br><span class="line">        node-&gt;p = x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="插入後性質討論"><a href="#插入後性質討論" class="headerlink" title="插入後性質討論"></a>插入後性質討論</h4><p>插入一個節點在紅黑樹上，和一般的 BST 上插入不同的點在於我們的五條性質要依然維持住。</p>
+<p>插入一個節點有可能違反的性質:</p>
+<p>性質1. 不會違反，顏色兩個就兩個嘛QQ<br><strong>性質2. 有可能會違反，插入 key 到空的樹上，此 key 會在樹根，必須要是黑色。</strong><br>性質3. 不會違反，不會對 NIL 進行任何改動。<br><strong>性質5. 如果我們插入的點都是紅色，那麼就不會違反。</strong><br><strong>性質4. 為了維護性質5. 我們插入的點以紅色為主，因為插入的節點會接在最下方(子節點兩個都是 NIL 黑色)，所以和子節點不會有重複紅色的情形，但是其父節點有可能是紅色，需要努力來維護。</strong></p>
+<h4 id="情況討論"><a href="#情況討論" class="headerlink" title="情況討論"></a>情況討論</h4><h5 id="性質2-獨立維護"><a href="#性質2-獨立維護" class="headerlink" title="性質2. 獨立維護"></a>性質2. 獨立維護</h5><p>可以注意到性質2. 其實很容易維護，我們只要發現修改的地方是根，就順便把根改成黑色，如此其他性質在維護好的情況下，就可以 $O(1)$ 直接維護好性質2. ，不用做其他努力。</p>
+<h5 id="性質4-5-綜合考量-情形0"><a href="#性質4-5-綜合考量-情形0" class="headerlink" title="性質4. 5. 綜合考量 [情形0]"></a>性質4. 5. 綜合考量 [情形0]</h5><p>若插入的點爸爸是黑色，則是最好的情況。因為預設插入紅色節點，性質5. 維護好了。爸爸是黑色，性質4. 又維護住了，性質2. 用前面提的維護，因此紅黑樹性質就完整維護住了。</p>
+<h5 id="性質4-5-綜合考量-情形1"><a href="#性質4-5-綜合考量-情形1" class="headerlink" title="性質4. 5. 綜合考量 [情形1]"></a>性質4. 5. 綜合考量 [情形1]</h5><p>令插入的點為 x ，若插入的點爸爸是紅色，叔叔是紅色，則 x 位置無關，皆做以下修正。</p>
+<p>修正前:</p>
+<pre class="mermaid">graph TD;
+x.grandparent(x.grandparent black);
+x.parent(x.parent red);
+x.uncle(x.uncle red);
+x(x red);
+x.grandparent --> x.parent;
+x.grandparent --> x.uncle;
+x.parent --> x;
+x.parent --> A;
+x.uncle --> B;
+x.uncle --> C;</pre>
+
+<p>修正後:</p>
+<pre class="mermaid">graph TD;
+x.grandparent(x.grandparent red -> new x);
+x.parent(x.parent black);
+x.uncle(x.uncle black);
+x(x red);
+x.grandparent --> x.parent;
+x.grandparent --> x.uncle;
+x.parent --> x;
+x.parent --> A;
+x.uncle --> B;
+x.uncle --> C;</pre>
+
+<p>可以注意到經過此區域所有的 bh 不變，性質 5. 成功維護。</p>
+<p>因為 x.grandparent 變成紅色，在這輪就像是新增的節點，因此把 x.grandparent 看成是新的 x ，迭代進行維護。</p>
+<h5 id="性質4-5-綜合考量-情形2"><a href="#性質4-5-綜合考量-情形2" class="headerlink" title="性質4. 5. 綜合考量 [情形2]"></a>性質4. 5. 綜合考量 [情形2]</h5><blockquote>
+<p>Node: [情形2] 以及等等的 [情形3] 由於爸爸是紅色，意味著爸爸必然不是根節點，因此爺爺總是存在。且由於性質4. ，爺爺必然是黑色。</p>
+</blockquote>
+<p>令插入的點為 x ，若插入的點爸爸是紅色，叔叔是黑色，且爸爸是祖先的左邊小孩(右邊小孩則鏡像處理)。</p>
+<p>若自己是爸爸右邊的小孩(靠裡面)，則先對 x.parent 進行一次左旋，類似把 x 轉到外面，但實際上在外面的會變成 x.parent ，但總而言之會變成連續兩紅靠外的情形，把 x 設成下面那個，接著做等等的 [情形3] 修正。</p>
+<p>修正前(這裡 x 有可能有非葉節點的小孩，在此省略):</p>
+<pre class="mermaid">graph TD;
+x.grandparent(x.grandparent black);
+x.parent(x.parent red);
+x.uncle(x.uncle black);
+x(x red);
+x.grandparent --> x.parent;
+x.grandparent --> x.uncle;
+x.parent --> A;
+x.parent --> x;
+x.uncle --> D;
+x.uncle --> E;</pre>
+
+<p>修正後:</p>
+<pre class="mermaid">graph TD;
+x.grandparent(x.grandparent black);
+x.parent(x.parent red -> new x);
+x.uncle(x.uncle black);
+x(x red);
+x.grandparent --> x;
+x.grandparent --> x.uncle;
+x.parent --> A;
+x --> x.parent;
+x.uncle --> B;
+x.uncle --> C;</pre>
+
+<h5 id="性質4-5-綜合考量-情形3"><a href="#性質4-5-綜合考量-情形3" class="headerlink" title="性質4. 5. 綜合考量 [情形3]"></a>性質4. 5. 綜合考量 [情形3]</h5><blockquote>
+<p>much more trickier</p>
+</blockquote>
+<p>令插入的點為 x ，若插入的點爸爸是紅色，叔叔是黑色，且爸爸是祖先的左邊小孩(右邊小孩則鏡像處理)。</p>
+<p>若自己是爸爸左邊的小孩(靠外面)，則先對 x.grandparent 進行一次右旋，把兩個連續的紅色往上轉。並且把下去的 x.grandparent 設成紅色。上去的 x.parent 設成黑色。</p>
+<p>修正前:</p>
+<pre class="mermaid">graph TD;
+x.grandparent(x.grandparent black);
+x.parent(x.parent red);
+x.uncle(x.uncle black);
+x(x red);
+x.grandparent --> x.parent;
+x.grandparent --> x.uncle;
+x.parent --> x;
+x.parent --> A;
+x.uncle --> D;
+x.uncle --> E;
+x --> F;
+x --> G;</pre>
+
+<p>修正後(這裡省略了 x.uncle 的 DE 兩小孩，並非消失):</p>
+<pre class="mermaid">graph TD;
+x.grandparent(x.grandparent red);
+x.parent(x.parent black);
+x.uncle(x.uncle black);
+x(x red);
+x.grandparent --> A;
+x.grandparent --> x.uncle;
+x.parent --> x;
+x.parent --> x.grandparent
+x --> F;
+x --> G;</pre>
+
+<p>可以注意到經過此區域所有的 bh 不變，性質 5. 成功維護。</p>
+<p>這裡不會有 [情形1] 需要遞迴處理的情況，因為更新完的最上面是黑色，不會有兩紅色的情況。</p>
+<h4 id="維護插入後性質程式碼"><a href="#維護插入後性質程式碼" class="headerlink" title="維護插入後性質程式碼"></a>維護插入後性質程式碼</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">RBT_insertion_fixup</span><span class="params">(Tree* T, Node* x)</span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (x-&gt;p-&gt;color == RED)&#123;</span><br><span class="line">        <span class="keyword">if</span> (x-&gt;p == x-&gt;p-&gt;p-&gt;l)&#123; <span class="comment">// 爸爸在爺爺的左邊</span></span><br><span class="line">            Node *uncle = x-&gt;p-&gt;p-&gt;r;</span><br><span class="line">            <span class="keyword">if</span> (uncle-&gt;color == RED)&#123; <span class="comment">// [情形1] 叔叔亦為紅色</span></span><br><span class="line">                x-&gt;p-&gt;p-&gt;color = RED;</span><br><span class="line">                x-&gt;p-&gt;color = BLACK;</span><br><span class="line">                uncle-&gt;color = BLACK;</span><br><span class="line">                x = x-&gt;p-&gt;p;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123; <span class="comment">// [情形2/3] 叔叔為黑色</span></span><br><span class="line">                <span class="keyword">if</span> (x == x-&gt;p-&gt;r)&#123;</span><br><span class="line">                    x = x-&gt;p;</span><br><span class="line">                    left_rotate(T, x-&gt;p);</span><br><span class="line">                &#125;</span><br><span class="line">                x-&gt;p-&gt;color = BLACK;</span><br><span class="line">                x-&gt;p-&gt;p-&gt;color = RED;</span><br><span class="line">                right_rotate(T, x-&gt;p-&gt;p);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; <span class="comment">// 爸爸在爺爺的右邊，鏡像</span></span><br><span class="line">            Node *uncle = x-&gt;p-&gt;p-&gt;l;</span><br><span class="line">            <span class="keyword">if</span> (uncle-&gt;color == RED)&#123; <span class="comment">// [情形1] 叔叔亦為紅色</span></span><br><span class="line">                x-&gt;p-&gt;p-&gt;color = RED;</span><br><span class="line">                x-&gt;p-&gt;color = BLACK;</span><br><span class="line">                uncle-&gt;color = BLACK;</span><br><span class="line">                x = x-&gt;p-&gt;p;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123; <span class="comment">// [情形2/3] 叔叔為黑色</span></span><br><span class="line">                <span class="keyword">if</span> (x == x-&gt;p-&gt;l)&#123;</span><br><span class="line">                    x = x-&gt;p;</span><br><span class="line">                    right_rotate(T, x-&gt;p);</span><br><span class="line">                &#125;</span><br><span class="line">                x-&gt;p-&gt;color = BLACK;</span><br><span class="line">                x-&gt;p-&gt;p-&gt;color = RED;</span><br><span class="line">                left_rotate(T, x-&gt;p-&gt;p);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    T-&gt;root-&gt;color = BLACK;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p style="color: #AAA">Remark. 若把紅色當成插入的量，可以發現，情形 2/3 的旋轉修正，像是偵測到了某一棵子樹中被加到傾斜了，把插入的量轉給另一邊的子樹，以維持平衡。情形1的遞迴，有點像是某個節點底下的子樹已經被插入了太多了，反應給上層，給上面去看是要旋轉給另一顆大一點的子樹，或是繼續向上呈報。當呈報到樹根時，意味著這次的插入是整棵樹的正常成長，沒有傾斜，這樣就沒有關係了，依然平衡。</p>
+
+<h4 id="紅黑樹上插入程式碼"><a href="#紅黑樹上插入程式碼" class="headerlink" title="紅黑樹上插入程式碼"></a>紅黑樹上插入程式碼</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">RBT_insert</span><span class="params">(Tree* T, <span class="type">int</span> key)</span>&#123;</span><br><span class="line">    Node* node = BST_insert(T, key);</span><br><span class="line">    <span class="keyword">if</span> (node-&gt;p-&gt;color == RED) RBT_insertion_fixup(T, node);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="紅黑樹上刪除"><a href="#紅黑樹上刪除" class="headerlink" title="紅黑樹上刪除"></a>紅黑樹上刪除</h3><blockquote>
+<p>extremely much more trickier</p>
+</blockquote>
+<h4 id="BST-上刪除"><a href="#BST-上刪除" class="headerlink" title="BST 上刪除"></a>BST 上刪除</h4><p>首先先找到那個 node，接著有幾種情形有可能發生:</p>
+<ol>
+<li>該點是葉節點 -&gt; 直接拔掉。</li>
+<li>該點接了一個小孩 -&gt; 小孩接上去替補後拔掉。</li>
+<li>該點接了兩個小孩 -&gt; 找到該點的 predecessor&#x2F;successor (看實作方式，都可以)，把他的值送給要刪除的點後，改刪除 predecessor&#x2F;successor 那個位置的點。</li>
+</ol>
+<p>定義 x, y, z 三個節點分別代表:</p>
+<ul>
+<li>x: 要替換到 y 的位置的點。</li>
+<li>y: 實際要被刪除的點。</li>
+<li>z: 要求要被刪除的點。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Node* <span class="title function_">predecessor_in_subtree</span><span class="params">(Tree *T, Node *node)</span>&#123;</span><br><span class="line">    Node* cursor = node-&gt;l;</span><br><span class="line">    <span class="keyword">if</span> (cursor == T-&gt;NIL) <span class="keyword">return</span> T-&gt;NIL;</span><br><span class="line">    <span class="keyword">while</span> (cursor-&gt;r != T-&gt;NIL)</span><br><span class="line">        cursor = cursor-&gt;r;</span><br><span class="line">    <span class="keyword">return</span> cursor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這裡用 predecessor 實作，並回傳遞補上去的節點。</span></span><br><span class="line">Node* <span class="title function_">BST_delete</span><span class="params">(Tree *T, <span class="type">int</span> key)</span>&#123;</span><br><span class="line">    Node *x, *y, *z = search(T, key);</span><br><span class="line">    <span class="keyword">if</span> (z == T-&gt;NIL) <span class="keyword">return</span> T-&gt;NIL; <span class="comment">// 這個 key 不在樹中</span></span><br><span class="line">    y = z;</span><br><span class="line">    <span class="keyword">if</span> (z-&gt;l == T-&gt;NIL &amp;&amp; z-&gt;r == T-&gt;NIL)&#123; <span class="comment">// 刪除點為葉節點</span></span><br><span class="line">        x = T-&gt;NIL;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (z-&gt;l != T-&gt;NIL &amp;&amp; z-&gt;r != T-&gt;NIL)&#123; <span class="comment">// 刪除點兩個子代都在</span></span><br><span class="line">        y = predecessor_in_subtree(T, z);</span><br><span class="line">        z-&gt;key = y-&gt;key;</span><br><span class="line">        x = y-&gt;l;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123; <span class="comment">// 刪除點只有一個子代</span></span><br><span class="line">        <span class="keyword">if</span> (z-&gt;l == T-&gt;NIL)&#123; <span class="comment">// 只有右子代</span></span><br><span class="line">            x = y-&gt;r;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; <span class="comment">// 只有左子代</span></span><br><span class="line">            x = y-&gt;l;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (y == T-&gt;root)&#123;</span><br><span class="line">        T-&gt;root = x;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (y == y-&gt;p-&gt;l)&#123;</span><br><span class="line">        y-&gt;p-&gt;l = x;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        y-&gt;p-&gt;r = x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (x != T-&gt;NIL) x-&gt;p = y-&gt;p;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="刪除後性質討論"><a href="#刪除後性質討論" class="headerlink" title="刪除後性質討論"></a>刪除後性質討論</h4><p>刪除一個紅黑樹上的節點，和一般的 BST 上刪除不同的點在於我們的五條性質要依然維持住。</p>
+<p>刪除一個節點有可能違反的性質:</p>
+<p>性質1. 不會違反，顏色兩個就兩個嘛 QQ。<br><strong>性質2. 有可能會違反，刪除到樹根選一個點來遞補，有可能會讓樹根變紅色。</strong><br>性質3. 不會違反，不會對 NIL 進行任何改動。<br><strong>性質4. 遞補上去的會不會撞到紅色很不確定。</strong><br><strong>性質5. 如果刪到紅色就安全，刪到黑色就需要努力了。</strong></p>
+<h4 id="情況討論-1"><a href="#情況討論-1" class="headerlink" title="情況討論"></a>情況討論</h4><h5 id="性質4-5-綜合考量-情形0-1"><a href="#性質4-5-綜合考量-情形0-1" class="headerlink" title="性質4. 5. 綜合考量 [情形0]"></a>性質4. 5. 綜合考量 [情形0]</h5><p>若刪到紅色的點，則所有節點的 bh 都不會改變，性質5. 是安全的。並且由於紅色點不相鄰，接起來的地方會是黑色和黑色接，因此性質4. 也安全。</p>
+<p>這裡可以注意到，若刪到黑色節點，則性質5. 會有點問題，我們會需要做有一點像是把一個黑色的量，推入遞補上去的樹的感覺，才能修正。因此底下會出現一個點暫時性的有兩個顏色的敘述，例如紅+黑、黑+黑之類的顏色描述。</p>
+<h5 id="性質2-靠後面維護"><a href="#性質2-靠後面維護" class="headerlink" title="性質2. 靠後面維護"></a>性質2. 靠後面維護</h5><p>可以注意到樹根會牽扯到被刪除而被遞補的情形，是樹根只有一邊的小孩的情況 (其他都不會有點遞補成為新樹根)。因此樹根的顏色改變，只有在樹根的唯一小孩是紅色的情形。但透過底下的 [情形1] ，此情況即可修正，因此不需要特別考慮樹根的顏色。</p>
+<h5 id="性質4-5-綜合考量-情形1-1"><a href="#性質4-5-綜合考量-情形1-1" class="headerlink" title="性質4. 5. 綜合考量 [情形1]"></a>性質4. 5. 綜合考量 [情形1]</h5><p>若遞補上去的是紅色的點，則一個黑色被推入變成紅+黑，直接改成黑色即可。</p>
+<h5 id="性質4-5-綜合考量-情形2-1"><a href="#性質4-5-綜合考量-情形2-1" class="headerlink" title="性質4. 5. 綜合考量 [情形2]"></a>性質4. 5. 綜合考量 [情形2]</h5><p>令遞補的點為 x ，且 x 是他爸爸的左邊小孩(右邊小孩則鏡像處理)。</p>
+<p>若遞補上去的是黑色的點，且弟弟是紅色，則對爸爸左旋，爸爸改紅，弟弟改黑，讓弟弟變成黑色，切入其他情形。</p>
+<p>修正前(有寫顏色的是必然的顏色，沒寫的是都有可能):</p>
+<pre class="mermaid">graph TD;
+x.parent(x.parent black);
+x.brother(x.brother red);
+x(x black+black);
+C(C black);
+D(D black);
+x.parent --> x;
+x.parent --> x.brother;
+x --> A;
+x --> B;
+x.brother --> C;
+x.brother --> D;</pre>
+
+<p>修正後(有寫顏色的是必然的顏色，沒寫的是都有可能):</p>
+<pre class="mermaid">graph TD;
+x.parent(x.parent red);
+x.brother(x.brother black);
+x(x black+black);
+C(C black);
+D(D black);
+x.parent --> x;
+x.parent --> C;
+x --> A;
+x --> B;
+x.brother --> x.parent;
+x.brother --> D;</pre>
+
+<h5 id="性質4-5-綜合考量-情形3-1"><a href="#性質4-5-綜合考量-情形3-1" class="headerlink" title="性質4. 5. 綜合考量 [情形3]"></a>性質4. 5. 綜合考量 [情形3]</h5><p>令遞補的點為 x ，且 x 不論是他爸爸的左、右小孩都一樣。</p>
+<p>若遞補上去的是黑色的點，且弟弟是黑色，姪子也都是黑色，則和弟弟一起把一個黑色往上推，往上遞迴處理。</p>
+<p>修正前(有寫顏色的是必然的顏色，沒寫的是都有可能):</p>
+<pre class="mermaid">graph TD;
+x.parent(x.parent);
+x.brother(x.brother black);
+x(x black+black);
+C(C black);
+D(D black);
+x.parent --> x;
+x.parent --> x.brother;
+x --> A;
+x --> B;
+x.brother --> C;
+x.brother --> D;</pre>
+
+<p>修正後(有寫顏色的是必然的顏色，沒寫的是都有可能):</p>
+<pre class="mermaid">graph TD;
+x.parent(x.parent ?+black -> new x);
+x.brother(x.brother red);
+x(x black);
+C(C black);
+D(D black);
+x.parent --> x;
+x.parent --> x.brother;
+x --> A;
+x --> B;
+x.brother --> C;
+x.brother --> D;</pre>
+
+<h5 id="性質4-5-綜合考量-情形4"><a href="#性質4-5-綜合考量-情形4" class="headerlink" title="性質4. 5. 綜合考量 [情形4]"></a>性質4. 5. 綜合考量 [情形4]</h5><p>令遞補的點為 x ，且 x 是他爸爸的左邊小孩(右邊小孩則鏡像處理)。</p>
+<p>若遞補上去的是黑色的點，且弟弟是黑色，姪子是左紅右黑(內紅外黑)，則右旋弟弟，下去的弟弟變紅，上去的紅色姪子變黑，切入下一個情形。</p>
+<p>修正前(有寫顏色的是必然的顏色，沒寫的是都有可能):</p>
+<pre class="mermaid">graph TD;
+x.parent(x.parent);
+x.brother(x.brother black);
+x(x black+black);
+C(C red);
+D(D black);
+x.parent --> x;
+x.parent --> x.brother;
+x --> A;
+x --> B;
+x.brother --> C;
+x.brother --> D;</pre>
+
+<p>修正後(有寫顏色的是必然的顏色，沒寫的是都有可能)(EF 排版用的，不是多出來的，本來就在那邊):</p>
+<pre class="mermaid">graph TD;
+x.parent(x.parent);
+x.brother(x.brother red);
+x(x black+black);
+C(C black);
+D(D black);
+x.parent --> x;
+x.parent --> C;
+x --> A;
+x --> B;
+C --> x.brother;
+x.brother --> D;
+A --> E;
+A --> F;</pre>
+
+<h5 id="性質4-5-綜合考量-情形5"><a href="#性質4-5-綜合考量-情形5" class="headerlink" title="性質4. 5. 綜合考量 [情形5]"></a>性質4. 5. 綜合考量 [情形5]</h5><p>令遞補的點為 x ，且 x 是他爸爸的左邊小孩(右邊小孩則鏡像處理)。</p>
+<p>若遞補上去的是黑色的點，且弟弟是黑色，姪子是右紅，則左旋爸爸，上去的弟弟變爸爸的顏色，下去的爸爸變黑，紅色姪子變黑，自己的兩個黑色就解出去了，不用再處理了。</p>
+<p>修正前(有寫顏色的是必然的顏色，沒寫的是都有可能):</p>
+<pre class="mermaid">graph TD;
+x.parent(x.parent ?);
+x.brother(x.brother black);
+x(x black+black);
+C(C);
+D(D red);
+x.parent --> x;
+x.parent --> x.brother;
+x --> A;
+x --> B;
+x.brother --> C;
+x.brother --> D;</pre>
+
+<p>修正後(有寫顏色的是必然的顏色，沒寫的是都有可能)(AB 沒有消失，只是省略而已):</p>
+<pre class="mermaid">graph TD;
+x.parent(x.parent black);
+x.brother(x.brother ?);
+x(x black);
+C(C);
+D(D black);
+x.brother --> x.parent;
+x.brother --> D;
+x.parent --> x;
+x.parent --> C;</pre>
+
+<h4 id="修正程式碼"><a href="#修正程式碼" class="headerlink" title="修正程式碼"></a>修正程式碼</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 對 delete 稍作修改，以判斷被刪除的是否是黑色。改成回傳需要進一步 fixup 的節點。</span></span><br><span class="line">Node* <span class="title function_">BST_delete</span><span class="params">(Tree *T, <span class="type">int</span> key)</span>&#123;</span><br><span class="line">    Node *x, *y, *z = search(T, key);</span><br><span class="line">    <span class="keyword">if</span> (z == T-&gt;NIL) <span class="keyword">return</span> T-&gt;NIL; <span class="comment">// 這個 key 不在樹中</span></span><br><span class="line">    y = z;</span><br><span class="line">    <span class="keyword">if</span> (z-&gt;l == T-&gt;NIL &amp;&amp; z-&gt;r == T-&gt;NIL)&#123; <span class="comment">// 刪除點為葉節點</span></span><br><span class="line">        x = T-&gt;NIL;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (z-&gt;l != T-&gt;NIL &amp;&amp; z-&gt;r != T-&gt;NIL)&#123; <span class="comment">// 刪除點兩個子代都在</span></span><br><span class="line">        y = predecessor_in_subtree(T, z);</span><br><span class="line">        z-&gt;key = y-&gt;key;</span><br><span class="line">        x = y-&gt;l;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123; <span class="comment">// 刪除點只有一個子代</span></span><br><span class="line">        <span class="keyword">if</span> (z-&gt;l == T-&gt;NIL)&#123; <span class="comment">// 只有右子代</span></span><br><span class="line">            x = y-&gt;r;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; <span class="comment">// 只有左子代</span></span><br><span class="line">            x = y-&gt;l;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (y == T-&gt;root)&#123;</span><br><span class="line">        T-&gt;root = x;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (y == y-&gt;p-&gt;l)&#123;</span><br><span class="line">        y-&gt;p-&gt;l = x;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        y-&gt;p-&gt;r = x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (x != T-&gt;NIL) x-&gt;p = y-&gt;p;</span><br><span class="line">    <span class="keyword">if</span> (y-&gt;color == RED) <span class="keyword">return</span> T-&gt;NIL;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">RBT_deletion_fixup</span><span class="params">(Tree *T, Node *x)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x == T-&gt;NIL) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">while</span> (x != T-&gt;root &amp;&amp; x-&gt;color == BLACK)&#123;</span><br><span class="line">        <span class="keyword">if</span> (x == x-&gt;p-&gt;l)&#123; <span class="comment">// 自己是爸爸的左邊小孩</span></span><br><span class="line">            Node* brother = x-&gt;p-&gt;r;</span><br><span class="line">            <span class="keyword">if</span> (brother-&gt;color == RED)&#123; <span class="comment">// 弟弟是紅色</span></span><br><span class="line">                brother-&gt;color = BLACK;</span><br><span class="line">                x-&gt;p-&gt;color = RED;</span><br><span class="line">                left_rotate(T, x-&gt;p);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123; <span class="comment">// 弟弟是黑色</span></span><br><span class="line">                <span class="comment">// 兩個姪子皆黑色</span></span><br><span class="line">                <span class="keyword">if</span> (brother-&gt;l-&gt;color == BLACK &amp;&amp; brother-&gt;r-&gt;color == BLACK)&#123; </span><br><span class="line">                    brother-&gt;color = RED;</span><br><span class="line">                    x = x-&gt;p;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">if</span> (brother-&gt;r-&gt;color == BLACK)&#123; <span class="comment">// 姪子是內紅外黑</span></span><br><span class="line">                        brother-&gt;l-&gt;color = BLACK;</span><br><span class="line">                        brother-&gt;color = RED;</span><br><span class="line">                        right_rotate(T, brother);</span><br><span class="line">                        brother = x-&gt;p-&gt;r;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 姪子外紅</span></span><br><span class="line">                    brother-&gt;color = x-&gt;p-&gt;color;</span><br><span class="line">                    x-&gt;p-&gt;color = BLACK;</span><br><span class="line">                    brother-&gt;r-&gt;color = BLACK;</span><br><span class="line">                    left_rotate(T, x-&gt;p);</span><br><span class="line">                    x = T-&gt;root; <span class="comment">// 跳到 root 讓 while 迴圈結束</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Node* brother = x-&gt;p-&gt;l;</span><br><span class="line">            <span class="keyword">if</span> (brother-&gt;color == RED)&#123; <span class="comment">// 弟弟是紅色</span></span><br><span class="line">                brother-&gt;color = BLACK;</span><br><span class="line">                x-&gt;p-&gt;color = RED;</span><br><span class="line">                right_rotate(T, x-&gt;p);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123; <span class="comment">// 弟弟是黑色</span></span><br><span class="line">                <span class="comment">// 兩個姪子皆黑色</span></span><br><span class="line">                <span class="keyword">if</span> (brother-&gt;l-&gt;color == BLACK &amp;&amp; brother-&gt;r-&gt;color == BLACK)&#123; </span><br><span class="line">                    brother-&gt;color = RED;</span><br><span class="line">                    x = x-&gt;p;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">if</span> (brother-&gt;l-&gt;color == BLACK)&#123; <span class="comment">// 姪子是內紅外黑</span></span><br><span class="line">                        brother-&gt;r-&gt;color = BLACK;</span><br><span class="line">                        brother-&gt;color = RED;</span><br><span class="line">                        left_rotate(T, brother);</span><br><span class="line">                        brother = x-&gt;p-&gt;l;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 姪子外紅</span></span><br><span class="line">                    brother-&gt;color = x-&gt;p-&gt;color;</span><br><span class="line">                    x-&gt;p-&gt;color = BLACK;</span><br><span class="line">                    brother-&gt;l-&gt;color = BLACK;</span><br><span class="line">                    right_rotate(T, x-&gt;p);</span><br><span class="line">                    x = T-&gt;root; <span class="comment">// 跳到 root 讓 while 迴圈結束</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    x-&gt;color = BLACK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="紅黑樹上刪除程式碼"><a href="#紅黑樹上刪除程式碼" class="headerlink" title="紅黑樹上刪除程式碼"></a>紅黑樹上刪除程式碼</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">RBT_delete</span><span class="params">(Tree* T, <span class="type">int</span> key)</span>&#123;</span><br><span class="line">    Node* node = BST_delete(T, key);</span><br><span class="line">    RBT_deletion_fixup(T, node); </span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p style="color: #AAA">Remark. 若把黑色當成刪除的量，可以發現，情形2的旋轉修正，像是一邊少兩單位，但另一邊多一單位的傾斜。則轉一下，做了一小部分的平衡修正，讓他先退成兩邊差一單位的情況去處理就好。情形3的姪子都黑，代表某個節點底下的子樹刪了太多，反應給上層，給上面去看是要旋轉過來，或是繼續向上呈報。當呈報到樹根時，意味著這次的刪除是整棵樹的正常縮水，沒有傾斜，這樣就沒有關係了，依然平衡。情形4代表內部姪子太多，有點可以拔，因此把他交給外部姪子，去讓他被情形5偵測到再轉過來。情形5的外部姪子為紅，代表外部有稍多的點，轉過來讓整體達成平衡。</a>
+
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>除了紅黑樹之外，也有許多不一樣的平衡二元搜尋樹，例如 AVL Tree、Treap、Splay Tree 等等。其中不乏有實作起來比紅黑樹簡單許多，不會有這麼多細小 case 要討論的資料結構。但紅黑樹的設計真的很值得品味 ! 透過局部的紅色、黑色去反應整體的傾斜之設計，簡直就是個藝術品。除了欣賞的角度，紅黑樹因為在旋轉的操作量，以及高度的維護上取得了還不錯的平衡，因此是一個很常被採用的平衡二元搜尋樹 (例如 C++ STL 中的 map 就是用紅黑樹實作的)。 綜上所述，紅黑樹真的很難令人不喜歡 :&gt;</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/blog/tags/Computer-Science/" rel="tag"><i class="fa fa-tag"></i> Computer Science</a>
+              <a href="/blog/tags/Datastructure-Algorithm/" rel="tag"><i class="fa fa-tag"></i> Datastructure & Algorithm</a>
+              <a href="/blog/tags/Tree/" rel="tag"><i class="fa fa-tag"></i> Tree</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">使用原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A6%8B%E6%93%8D%E4%BD%9C-%E6%97%8B%E8%BD%89"><span class="nav-number">2.</span> <span class="nav-text">常見操作 旋轉</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%B9%E7%AF%80%E9%BB%9E%E5%84%B2%E5%AD%98%E8%B3%87%E8%A8%8A%E5%AE%9A%E7%BE%A9"><span class="nav-number">2.1.</span> <span class="nav-text">樹節點儲存資訊定義</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E6%97%8B"><span class="nav-number">2.2.</span> <span class="nav-text">左旋</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E6%97%8B"><span class="nav-number">2.3.</span> <span class="nav-text">右旋</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%85%E9%BB%91%E6%A8%B9-RB-Tree"><span class="nav-number">3.</span> <span class="nav-text">紅黑樹 (RB-Tree)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E6%80%A7%E7%9A%84%E7%A2%BA%E4%BF%9D-%E8%AD%89%E6%98%8E"><span class="nav-number">3.1.</span> <span class="nav-text">平衡性的確保(證明)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E7%90%86-1-node-x-%E5%BA%95%E4%B8%8B%E7%9A%84-subtree-%E6%9C%80%E5%B0%91%E6%9C%89-2-bh-x-1-%E5%80%8B%E7%AF%80%E9%BB%9E-%E5%90%AB-x"><span class="nav-number">3.1.1.</span> <span class="nav-text">引理 1. node x 底下的 subtree 最少有 $2^{bh(x)}-1$ 個節點 (含 x)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E7%90%86-2-%E5%B0%8D%E4%BB%BB%E6%84%8F%E6%89%80%E5%9C%A8%E9%AB%98%E5%BA%A6%E7%82%BA-h-%E7%9A%84%E7%AF%80%E9%BB%9E-x%EF%BC%8C-bh-x-geq-h-2"><span class="nav-number">3.1.2.</span> <span class="nav-text">引理 2. 對任意所在高度為 h 的節點 x，$bh(x)\geq h&#x2F;2$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E7%90%86-n-%E5%80%8B%E7%AF%80%E9%BB%9E%E7%9A%84%E7%B4%85%E9%BB%91%E6%A8%B9%E6%A8%B9%E9%AB%98%E4%B8%8D%E6%9C%83%E8%B6%85%E9%81%8E-2lg-n-1"><span class="nav-number">3.1.3.</span> <span class="nav-text">定理. n 個節點的紅黑樹樹高不會超過 $2lg(n+1)$</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%85%E9%BB%91%E6%A8%B9%E7%AF%80%E9%BB%9E%E5%84%B2%E5%AD%98%E8%B3%87%E8%A8%8A%E5%AE%9A%E7%BE%A9"><span class="nav-number">3.2.</span> <span class="nav-text">紅黑樹節點儲存資訊定義</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%85%E9%BB%91%E6%A8%B9%E4%B8%8A%E6%9F%A5%E8%A9%A2"><span class="nav-number">3.3.</span> <span class="nav-text">紅黑樹上查詢</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%85%E9%BB%91%E6%A8%B9%E4%B8%8A%E6%8F%92%E5%85%A5"><span class="nav-number">3.4.</span> <span class="nav-text">紅黑樹上插入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BST-%E4%B8%8A%E6%8F%92%E5%85%A5"><span class="nav-number">3.4.1.</span> <span class="nav-text">BST 上插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E5%BE%8C%E6%80%A7%E8%B3%AA%E8%A8%8E%E8%AB%96"><span class="nav-number">3.4.2.</span> <span class="nav-text">插入後性質討論</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%85%E6%B3%81%E8%A8%8E%E8%AB%96"><span class="nav-number">3.4.3.</span> <span class="nav-text">情況討論</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA2-%E7%8D%A8%E7%AB%8B%E7%B6%AD%E8%AD%B7"><span class="nav-number">3.4.3.1.</span> <span class="nav-text">性質2. 獨立維護</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A20"><span class="nav-number">3.4.3.2.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形0]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A21"><span class="nav-number">3.4.3.3.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形1]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A22"><span class="nav-number">3.4.3.4.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形2]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A23"><span class="nav-number">3.4.3.5.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形3]</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B6%AD%E8%AD%B7%E6%8F%92%E5%85%A5%E5%BE%8C%E6%80%A7%E8%B3%AA%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.4.4.</span> <span class="nav-text">維護插入後性質程式碼</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%85%E9%BB%91%E6%A8%B9%E4%B8%8A%E6%8F%92%E5%85%A5%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.4.5.</span> <span class="nav-text">紅黑樹上插入程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%85%E9%BB%91%E6%A8%B9%E4%B8%8A%E5%88%AA%E9%99%A4"><span class="nav-number">3.5.</span> <span class="nav-text">紅黑樹上刪除</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BST-%E4%B8%8A%E5%88%AA%E9%99%A4"><span class="nav-number">3.5.1.</span> <span class="nav-text">BST 上刪除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%AA%E9%99%A4%E5%BE%8C%E6%80%A7%E8%B3%AA%E8%A8%8E%E8%AB%96"><span class="nav-number">3.5.2.</span> <span class="nav-text">刪除後性質討論</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%85%E6%B3%81%E8%A8%8E%E8%AB%96-1"><span class="nav-number">3.5.3.</span> <span class="nav-text">情況討論</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A20-1"><span class="nav-number">3.5.3.1.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形0]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA2-%E9%9D%A0%E5%BE%8C%E9%9D%A2%E7%B6%AD%E8%AD%B7"><span class="nav-number">3.5.3.2.</span> <span class="nav-text">性質2. 靠後面維護</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A21-1"><span class="nav-number">3.5.3.3.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形1]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A22-1"><span class="nav-number">3.5.3.4.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形2]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A23-1"><span class="nav-number">3.5.3.5.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形3]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A24"><span class="nav-number">3.5.3.6.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形4]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA4-5-%E7%B6%9C%E5%90%88%E8%80%83%E9%87%8F-%E6%83%85%E5%BD%A25"><span class="nav-number">3.5.3.7.</span> <span class="nav-text">性質4. 5. 綜合考量 [情形5]</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%AD%A3%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.5.4.</span> <span class="nav-text">修正程式碼</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%85%E9%BB%91%E6%A8%B9%E4%B8%8A%E5%88%AA%E9%99%A4%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.5.5.</span> <span class="nav-text">紅黑樹上刪除程式碼</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">4.</span> <span class="nav-text">結語</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <div class="site-author-image-container">
+    <img class="site-author-image" itemprop="image" alt="pooiscoding"
+      src="https://i.imgur.com/McrVyGM.jpg">
+    <div class="site-author-image-inner-container">
+      <img class="site-author-inner-image" itemprop="image" alt="pooiscoding"
+        src="https://i.imgur.com/McrVyGM.jpg">
+    </div>
+  </div>
+  <p class="site-author-name" itemprop="name">pooiscoding</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pooiscoding</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
