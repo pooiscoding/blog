@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"pooiscoding.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="簡介條件機率、貝氏定理和獨立事件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="條件機率及獨立事件">
+<meta property="og:url" content="https://pooiscoding.github.io/blog/2024/07/11/Conditional-probability-and-independent-events/index.html">
+<meta property="og:site_name" content="Poo&#39;s Blog">
+<meta property="og:description" content="簡介條件機率、貝氏定理和獨立事件">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-11T07:31:50.000Z">
+<meta property="article:modified_time" content="2024-07-12T15:38:32.619Z">
+<meta property="article:author" content="pooiscoding">
+<meta property="article:tag" content="Computer Science">
+<meta property="article:tag" content="Probability">
+<meta property="article:tag" content="Mathematics">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://pooiscoding.github.io/blog/2024/07/11/Conditional-probability-and-independent-events/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>條件機率及獨立事件 | Poo's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Poo's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://pooiscoding.github.io/blog/2024/07/11/Conditional-probability-and-independent-events/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/McrVyGM.jpg">
+      <meta itemprop="name" content="pooiscoding">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Poo's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          條件機率及獨立事件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-07-11 15:31:50" itemprop="dateCreated datePublished" datetime="2024-07-11T15:31:50+08:00">2024-07-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-07-12 23:38:32" itemprop="dateModified" datetime="2024-07-12T23:38:32+08:00">2024-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/" itemprop="url" rel="index"><span itemprop="name">Computer Science</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/Probability/" itemprop="url" rel="index"><span itemprop="name">Probability</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">簡介條件機率、貝氏定理和獨立事件</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言-什麼是條件機率"><a href="#前言-什麼是條件機率" class="headerlink" title="前言 什麼是條件機率"></a>前言 什麼是條件機率</h2><p>機率是一種人類對未知事件發生的信心之度量。在不確定結果以前，我們只能根據現有的知識去衡量這個事件發生的機率值。<br>有時雖然我們不能夠確定隨機試驗的結果，但我們會因為額外資訊的到來，而可能改變我們對這個事件發生的信心。</p>
+<p>舉例而言，假設有一顆球被隨機的藏在三個杯子裡。我們大概會說，球在某個特定杯子裡的機率是 1&#x2F;3。<br>但是如果今天你打開了某個特定杯子以外的其中一個杯子，發現球不在其中，你認為這個球在某個特定杯子裡的機率可能會發生改變。</p>
+<p>改變後的機率就稱為條件機率，或者是事後機率。也就是得知某個事件發生以後，我們得到的機率值。<br>(相對的我們有時會稱什麼都不知道時的機率值為事前機率)</p>
+<p>而本篇就是要討論，依循現代機率論的體系，我們應該如何妥善的給定事後機率的測量。</p>
+<h2 id="Conditional-Probability"><a href="#Conditional-Probability" class="headerlink" title="Conditional Probability"></a>Conditional Probability</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>The conditional probability of the event $B$ given the occurence of event $A$ (with $P[A] &gt; 0$) is</p>
+<p>$P[B|A]&#x3D;\frac{P[AB]}{P[A]}$, where $AB$ means that $A \cap B$.</p>
+<h3 id="Validity"><a href="#Validity" class="headerlink" title="Validity"></a>Validity</h3><p>Note: $P[B|A]$ 的意思是給定 $A$ 事件後 (condition on event $A$ occurs) $B$ 事件的 probability measure。 <br/><br>也就是說 $P[\cdot|A]$ 應該要是一個合理的 probability measure。</p>
+<ol>
+<li>$P[B|A] &#x3D; \frac{P[AB]}{P[A]} \geq 0$ (兩個正的東西相除仍然為正)</li>
+<li>$P[S|A] &#x3D; \frac{P[AS]}{P[A]} &#x3D;\frac{P[A]}{P[A]}&#x3D;1$ (宇集的機率仍然是 1)</li>
+<li>If $B_1, B_2, …$ are mutually exclusive, <br/><br>$P[\bigcup_{i&#x3D;1}^{\infty}B_i|A]&#x3D;\frac{P[A \cap \bigcup_{i&#x3D;1}^{\infty}B_i]}{P[A]}&#x3D;\frac{P[\bigcup_{i&#x3D;1}^{\infty}AB_i]}{P[A]}&#x3D;\frac{\sum_{i&#x3D;1}^{\infty}P[AB_i]}{P[A]}&#x3D;\sum_{i&#x3D;1}^{\infty}P[B_i|A]$ (Sigma Additivity)</li>
+</ol>
+<p>所以如果 $P[\cdot]$ 是一個合法的機率，$P[\cdot|A]$ 也是一個合法的機率。</p>
+<p>或者用另外一個角度來看，因為 $P[A|A]&#x3D;\frac{P[AA]}{P[A]}&#x3D;1$。或許可以把條件機率看成 “宇集縮小” 的機率測量。</p>
+<h3 id="Use-of-Partition-and-Law-of-Total-Probability"><a href="#Use-of-Partition-and-Law-of-Total-Probability" class="headerlink" title="Use of Partition and Law of Total Probability"></a>Use of Partition and Law of Total Probability</h3><p>對於某個事件 $A$ ，我們去製造一個 partition $B$&#x3D;{$B_1, B_2, …, B_n$}，</p>
+<p>$P[A] &#x3D; \sum_{i&#x3D;1}^{n}P[AB_i]$</p>
+<p>而其中 $P[AB_i]&#x3D;P[A|B_i]P[B_i]$，</p>
+<p>因此 $P[A] &#x3D; \sum_{i&#x3D;1}^{n}P[A|B_i]P[B_i]$ (Law of total probaility)</p>
+<blockquote>
+<p>注意條件機率的定義，作為條件的事件 $B_i$ 需要滿足 $P[B_i] &gt; 0$，也就是嚴格大於 0。而 partition 只有要求要非空的子集合，有可能會有事件是非空的，但是機率是 0。<br>如果要用嚴謹的數學，那麼有需要嚴格考慮這個問題。但是其實 $P[B_i] &#x3D; 0$ 時，用來計算 Law of total probaility 也不會有什麼影響，所以可以知道但不用糾結在這問題上。</p>
+</blockquote>
+<p>Law of total probability 這道式子實際的意義是，我們可以藉由 $A$ 事件在這些 partition 出來的事件 $B_i$ 確定發生的事後機率，及事件 $B_i$ 的機率，來還原 $A$ 事件原始的事前機率。</p>
+<p>主要是用在我們無法直接算出 $A$ 事件原始的事前機率，但假設這些 partition 出來的事件發生後，$A$ 事件的事後機率會變得相對好算的情況。</p>
+<p>e.g. 有三家麵包廠為某個麵包店供貨。A 廠占了供貨的 50%，良率為 80%；B 廠占了供貨的 30%，良率為 70%；C 廠占了供貨的 20%，良率為 90%。我們想知道這個麵包店進貨的麵包良率為多少 ?</p>
+<p>直接算麵包良率(隨機抽選一個麵包，合格的機率)我們不會算，<br>但是如果我們創建一個 partition $P&#x3D;${麵包來自 A 廠, 麵包來自 B 廠, 麵包來自 C 廠} <br/><br>我們知道 $P[$麵包來自 A 廠$]&#x3D;0.5$, $P[$麵包來自 B 廠$]&#x3D;0.3$, $P[$麵包來自 C 廠$]&#x3D;0.2%$ <br/><br>並且 $P[$麵包合格 | 麵包來自 A 廠$]&#x3D;0.8$, $P[$麵包合格 | 麵包來自 B 廠$]&#x3D;0.7$, $P[$麵包合格 | 麵包來自 C 廠$]&#x3D;0.9$ <br/><br>因此 $P[$麵包合格$]&#x3D;0.8\times 0.5+0.7\times 0.3+ 0.9 \times 0.2$</p>
+<h3 id="Bayes-Theorem"><a href="#Bayes-Theorem" class="headerlink" title="Bayes&#39; Theorem"></a>Bayes&#39; Theorem</h3><p>For any events $A$, $B$ with nonzero prior probability,</p>
+<p>$P[B|A]&#x3D;P[A|B]\times \frac{P[B]}{P[A]}$</p>
+<p>Bayes&#39; Theorem 主要是想告訴我們以下這個觀念。我們想要知道，得知 $A$ 事件發生時，能夠推論 $B$ 事件的機率為和 ? 這件事情可能相當複雜，並不好推論。但是如果我們能知道 $B$ 事件發生時，$A$ 事件的事後機率，再加上兩事件個別的事前機率，就能得知我們想知道的 $A$ 事件發生時， $B$ 事件的事後機率。</p>
+<p>常見的應用是，得知某現象可能來自於幾個不同的系統，我們想知道某現象發生時，能確定來自某系統的機率為和 ? 這件事情不好知道，從現象推論系統並不是簡單的事。但因為我們知道在每個可能的系統中，發生這個現象的機率。除了知道了給定在某個系統中，發生該現象的事後機率，用 law of total probability 也可以知道現象的事前機率。並且我們再得知不論該現象是否發生，該系統參與進討論的事前機率。只要得知這些，我們就可藉由 Bayes&#39; Theorem 去推論現象發生時，來自某系統的事後機率。</p>
+<p>e.g. 我們知道這個地區共有 $p$ 比例的人確診，並且確診後快篩陽性的機率為 $q$ ，沒確診但快篩陽性(偽陽性) 的機率為 $r$。我們想知道對於某疾病，得知快篩陽性的情況下，確診機率有多少。</p>
+<p>也就是說我們想知道發生快篩陽性這個現象，屬於確診這個系統的機率。<br>我們知道，確診的比例為 $p$。<br/><br>快篩陽性的機率用 law of total probability 知道為 $pq+(1-p)r$。</p>
+<p>所以 $P[確診|快篩陽性]&#x3D;P[快篩陽性|確診]\times \frac{P[確診]}{P[快篩陽性]}&#x3D;\frac{pq}{pq+(1-p)r}$。</p>
+<h3 id="經典三門問題"><a href="#經典三門問題" class="headerlink" title="經典三門問題"></a>經典三門問題</h3><blockquote>
+<p>情境: 你參加了一場遊戲，面前有三道門，其中兩道門後面是山羊，一道門後面是汽車。你需要從三道門中選出一道門，當你選到汽車的那扇門，你就贏得了這場遊戲，可以把汽車帶回家。<br>但在遊戲進行中，你選取其中一道門後(因為還沒打開，所以不確定後面的東西是什麼)，遊戲主持人打開了一扇後面是山羊的門，並且給你一個換另一扇門的機會，請問你應該換門嗎 ?</p>
+</blockquote>
+<p>假設汽車的位子是 uniform 的隨機，也就是在最一開始，每扇門開出汽車的事前機率都是 1&#x2F;3。</p>
+<p>一個最常見的錯誤分析是: 主持人開了一扇門是山羊，所以剩下兩道門中一個是山羊，一個是汽車。所以這兩扇門開出汽車的機率都變成 1&#x2F;2，換不換皆可。</p>
+<p>這個分析的錯誤點在於，你沒有察覺到主持人開門的限制所洩漏出來的資訊。</p>
+<p>假設我們一開始選了 $A$ 門，主持人開了 $B$ 門，剩下一個 $C$ 門問我們要不要換。用機率的語言來描述考慮換門的問題，就變成 $P[車在 C 門|打開了 B 門後沒車]$ 以及 $P[車在 A 門|打開了 B 門後沒車]$ 哪一個比較大 ?</p>
+<p>由於我們無法直接計算給定 打開了 B 門後沒車 這個現象的發生，其來自於車在 $A$ 門這個系統的事後機率，以及來自於車在 $C$ 門這個系統的事後機率，我們借助 Bayes&#39; Theorem 來計算。</p>
+<p>$P[打開了 B 門後沒車 | 車在 C 門] &#x3D; 1$ (車在 $C$ 門後不能開，你選的 $A$ 門不能開，那麼主持人必定只會打開 $B$ 門且後面沒車) <br/><br>$P[打開了 B 門後沒車 | 車在 A 門] &#x3D; 1&#x2F;2$ (車在 $A$ 門後，那麼主持人是 $B$ 門 $C$ 門隨機挑一個開的，畢竟兩扇門後都沒車) <br/><br>$P[車在 C 門] &#x3D; \frac{1}{3}$  (事前每扇門後面有車機率皆為 1&#x2F;3) <br/><br>$P[車在 A 門] &#x3D; \frac{1}{3}$  (事前每扇門後面有車機率皆為 1&#x2F;3) <br/><br>$P[打開了 B 門後沒車] &#x3D; P[打開了 B 門後沒車 | 車在 C 門]\times P[車在 C 門]+[打開了 B 門後沒車 | 車在 A 門]\times P[車在 A 門]$ <br/><br>所以 $P[打開了 B 門後沒車]&#x3D;1\times \frac{1}{3}+\frac{1}{2} \times \frac{1}{3}&#x3D;1&#x2F;2$</p>
+<p>$P[車在 C 門|打開了 B 門後沒車]&#x3D;P[打開了 B 門後沒車 | 車在 C 門]\times \frac{P[車在 C 門]}{P[打開了 B 門後沒車]}&#x3D;1\times \frac{1&#x2F;3}{1&#x2F;2}&#x3D;\frac{2}{3}$</p>
+<p>$P[車在 A 門|打開了 B 門後沒車]&#x3D;P[打開了 B 門後沒車 | 車在 A 門]\times \frac{P[車在 A 門]}{P[打開了 B 門後沒車]}&#x3D;\frac{1}{2} \times \frac{1&#x2F;3}{1&#x2F;2}&#x3D;\frac{1}{3}$</p>
+<p>所以我們應該要換門才對喔 !</p>
+<blockquote>
+<p>我自己當初一直搞不懂三門問題的關鍵點，後來發現最關鍵的地方是主持人在不同情況下，開門受到的限制有所不同。而這個限制不同的差別，會洩漏出額外的資訊，這個資訊差會讓我們推論出換門後機率較大這件事。</p>
+</blockquote>
+<h2 id="Independent-Events"><a href="#Independent-Events" class="headerlink" title="Independent Events"></a>Independent Events</h2><h3 id="Two-Independent-Events"><a href="#Two-Independent-Events" class="headerlink" title="Two Independent Events"></a>Two Independent Events</h3><p>Events $A$ and $B$ are independent if and only if</p>
+<p>$P[AB]&#x3D;P[A]P[B]$</p>
+<p>單從這道式子可能看不出其意涵，但從這道式子可以推出 $P[A]&#x3D;P[A|B]$ 這個算式，其意涵就比較明顯了。兩事件獨立指的是無論知道或不知道另一事件發生，都不影響該事件的機率。</p>
+<p>注意兩事件獨立的意涵其實沒有這麼容易理解。以下用一些特別的性質為例子，以數學佐以意義的說明，來加深這部分的刻畫。</p>
+<p>(a) $S$ 和 $\emptyset$ 這兩事件與所有事件獨立。</p>
+<p>數學: $P[AS] &#x3D; P[A] &#x3D; P[A] \times 1 &#x3D; P[A]P[S]$ ，因此 $S$ 與所有事件獨立<br/><br>意義: 由於宇集囊括了所有可能的結果，所以在某隨機試驗中必定會發生。而必定會發生的事件其不會帶來更多的資訊，因此有沒有這個事件的資訊不會讓我們對某個事件的機率發生改變。</p>
+<p>數學: $P[A \cap \emptyset] &#x3D; P[\emptyset] &#x3D; P[A] \times 0 &#x3D; P[A]P[\emptyset]$ ，因此 $\emptyset$ 與所有事件獨立<br/><br>意義: 由於空集合不包含任何可能的結果，所以在某隨機試驗中必定不會發生。而必定不會發生的事件其不會帶來更多的資訊，因此有沒有這個事件的資訊不會讓我們對某個事件的機率發生改變。</p>
+<p>(b) 已知事件 $A$ 和 $B$ 彼此獨立，則事件 $A$、$A^c$ 和 $B$、$B^c$ 的任一對組合皆獨立。</p>
+<p>數學: $P[A]&#x3D;P[AB \cup AB^c]&#x3D;P[AB]+P[AB^c]&#x3D;P[A]P[B]+P[AB^c]$，<br/><br>$P[AB^c]&#x3D;P[A]-P[A]P[B]&#x3D;P[A](1-P[B])&#x3D;P[A]P[B^c]$ <br/><br>意義: 已知 $A$ 和 $B$ 彼此獨立，也就是對其中某事件的發生，這項資訊不會影響到另一者的機率。那麼這個事件的不發生這個資訊，也不會影響到另一者的機率。</p>
+<p>(c) 兩互斥事件未必獨立</p>
+<blockquote>
+<p>這其實不是什麼性質，單純是我自己很常搞混的觀念，拿來做澄清。</p>
+</blockquote>
+<p>數學: $P[AB]&#x3D;P[\emptyset] \neq P[A]P[B]$, if $P[A] \neq 0$ and $P[B] \neq 0$. <br/><br>意義: 兩互斥事件就數學意義上，指的是兩事件交集為空。但就實際意義上來解釋，指的是一者發生，另一者必不發生。因此知道某一者發生的資訊會嚴重影響到另一者的機率。更準確地說，知道一者發生，另一者的事後機率為 0。因此只要兩者皆是有可能發生的事件 (事前機率不為 0)，兩者就必然不獨立。</p>
+<blockquote>
+<p>所以在舉兩事件獨立的例子的時候，切記兩事件必定有共同的 outcome ，不然兩事件就幾乎可以稱做不獨立。</p>
+</blockquote>
+<p>可以從這三個獨立相關的性質更加清楚獨立的意思。兩事件獨立指的是兩事件發生與否，不會影響到我們對另一事件的判斷。</p>
+<h3 id="Multiple-Independent-Events"><a href="#Multiple-Independent-Events" class="headerlink" title="Multiple Independent Events"></a>Multiple Independent Events</h3><p>Events $A_k$, $k \in K$ are mutually independent if and only if</p>
+<p>$P[\bigcap_{m\in M}A_m] &#x3D; \prod_{m\in M}P[A_m]$, $\forall M \subset K$.</p>
+<p>也就是對於 $A_1, A_2, …, A_k$ 這 k 個事件, 任取這 k 個事件隨便一個子集合 (e.g. {$A_1, A_3, A_7, A_{10}$}, {$A_1, A_2, …, A_{k-1}$}) 把這個子集合中全部事件做交集得到的事件之機率，要等於這個子集合中每個事件的機率乘積。此時我們就會稱這 k 個事件彼此獨立。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/blog/tags/Computer-Science/" rel="tag"><i class="fa fa-tag"></i> Computer Science</a>
+              <a href="/blog/tags/Probability/" rel="tag"><i class="fa fa-tag"></i> Probability</a>
+              <a href="/blog/tags/Mathematics/" rel="tag"><i class="fa fa-tag"></i> Mathematics</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2024/07/10/Probability-axioms-and-uncountable-sample-space/" rel="prev" title="機率三公理，可數樣本空間及不可數樣本空間之機率">
+      <i class="fa fa-chevron-left"></i> 機率三公理，可數樣本空間及不可數樣本空間之機率
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%A2%9D%E4%BB%B6%E6%A9%9F%E7%8E%87"><span class="nav-number">1.</span> <span class="nav-text">前言 什麼是條件機率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conditional-Probability"><span class="nav-number">2.</span> <span class="nav-text">Conditional Probability</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Definition"><span class="nav-number">2.1.</span> <span class="nav-text">Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Validity"><span class="nav-number">2.2.</span> <span class="nav-text">Validity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Use-of-Partition-and-Law-of-Total-Probability"><span class="nav-number">2.3.</span> <span class="nav-text">Use of Partition and Law of Total Probability</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bayes-Theorem"><span class="nav-number">2.4.</span> <span class="nav-text">Bayes&#39; Theorem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B6%93%E5%85%B8%E4%B8%89%E9%96%80%E5%95%8F%E9%A1%8C"><span class="nav-number">2.5.</span> <span class="nav-text">經典三門問題</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Independent-Events"><span class="nav-number">3.</span> <span class="nav-text">Independent Events</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Two-Independent-Events"><span class="nav-number">3.1.</span> <span class="nav-text">Two Independent Events</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multiple-Independent-Events"><span class="nav-number">3.2.</span> <span class="nav-text">Multiple Independent Events</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <div class="site-author-image-container">
+    <img class="site-author-image" itemprop="image" alt="pooiscoding"
+      src="https://i.imgur.com/McrVyGM.jpg">
+    <div class="site-author-image-inner-container">
+      <img class="site-author-inner-image" itemprop="image" alt="pooiscoding"
+        src="https://i.imgur.com/McrVyGM.jpg">
+    </div>
+  </div>
+  <p class="site-author-name" itemprop="name">pooiscoding</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pooiscoding</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
