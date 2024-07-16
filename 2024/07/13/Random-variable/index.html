@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"pooiscoding.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="簡介隨機變數的定義與在機率中扮演的角色。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="隨機變數的定義">
+<meta property="og:url" content="https://pooiscoding.github.io/blog/2024/07/13/Random-variable/index.html">
+<meta property="og:site_name" content="Poo&#39;s Blog">
+<meta property="og:description" content="簡介隨機變數的定義與在機率中扮演的角色。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-13T09:59:38.000Z">
+<meta property="article:modified_time" content="2024-07-16T09:13:10.083Z">
+<meta property="article:author" content="pooiscoding">
+<meta property="article:tag" content="Computer Science">
+<meta property="article:tag" content="Probability">
+<meta property="article:tag" content="Mathematics">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://pooiscoding.github.io/blog/2024/07/13/Random-variable/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>隨機變數的定義 | Poo's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Poo's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://pooiscoding.github.io/blog/2024/07/13/Random-variable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/McrVyGM.jpg">
+      <meta itemprop="name" content="pooiscoding">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Poo's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          隨機變數的定義
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-07-13 17:59:38" itemprop="dateCreated datePublished" datetime="2024-07-13T17:59:38+08:00">2024-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-07-16 17:13:10" itemprop="dateModified" datetime="2024-07-16T17:13:10+08:00">2024-07-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/" itemprop="url" rel="index"><span itemprop="name">Computer Science</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/Probability/" itemprop="url" rel="index"><span itemprop="name">Probability</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>12 mins.</span>
+            </span>
+            <div class="post-description">簡介隨機變數的定義與在機率中扮演的角色。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言-什麼是隨機變數-Random-Variable-及為什麼需要隨機變數"><a href="#前言-什麼是隨機變數-Random-Variable-及為什麼需要隨機變數" class="headerlink" title="前言 什麼是隨機變數 (Random Variable) 及為什麼需要隨機變數"></a>前言 什麼是隨機變數 (Random Variable) 及為什麼需要隨機變數</h2><p>寫完才發現前言的部份又臭又長。這部分單純只是我自己想要嘗試回答自己的問題，與主要脈絡沒什麼關係，可以跳過它。</p>
+<blockquote>
+<p>我常常會在學習一項新的技術時，習慣性的問自己: 1. 為什麼我們需要他，他能解決我們什麼問題 2. 為什麼我們只要他&#x2F;他比較好。<br>但對於隨機變數，我實在想不到一個簡潔明瞭、一語中的的解釋方式，<br>實際上到目前為止，我仍在找尋解答。<br>但以下我嘗試具體地去說出 “我對隨機變數的情感” 去描述隨機變數在我心中的地位，<br>誠如我的第一篇機率文章中所提到，這系列文章只是我個人的學習筆記及心情抒發，<br>因此以下有任何不正確之處還請不吝賜教。</p>
+</blockquote>
+<h3 id="第一個理由-複用機率模型"><a href="#第一個理由-複用機率模型" class="headerlink" title="第一個理由 複用機率模型"></a>第一個理由 複用機率模型</h3><p>到目前為止我們知道，對於一個結果未定的 random experiment ，我們雖然不能確切地說出他最終的 outcome 會是什麼，什麼樣的 events 會發生。但我們可以創造一個 probability space ，用 probability measure 去描述我們對某個事件發生的信心。</p>
+<p>至於該用什麼樣的 probability measure 去描述呢 ? 其實只要符合機率三公理，你愛說這個事件的機率是多少，就說這個事件的機率是多少。</p>
+<p>但是就實際層面來說，我們會根據這個問題的特性、性質，去給一個大家較能接受，較合理的 probability measure。</p>
+<p>舉例而言，</p>
+<ol>
+<li>對於一個公平的六面骰，我們通常會定義，骰子骰到 1、2、3、4、5、6 這 6 種事件的機率分別都是 1&#x2F;6。</li>
+<li>假設有六個盒子，其中一個盒子內裝有一顆球，我們通常會定義，編號 1、2、3、4、5、6 的盒子內藏有球這 6 種事件的機率分別都是 1&#x2F;6。</li>
+<li>假設要猜測一道六個選項的單選題的答案，我們通常會定義，答案為 1、2、3、4、5、6 這 6 種事件的機率分別都是 1&#x2F;6。</li>
+</ol>
+<p>更進一步，</p>
+<ol>
+<li>投擲 2 個公平的 6 面骰，如果我們觀察點數，我們會定義每種點數對的機率，骰子骰到 11、22、33、44、55、66 這 6 種事件的機率分別都是 1&#x2F;36，其餘任兩者組合的機率都是 2&#x2F;36。</li>
+<li>投擲 2 個公平的 6 面骰，如果我們觀察點數，，我們會定義 1 出現了幾次的機率， 0、1、2 次這 3 種事件的機率分別為 25&#x2F;36、10&#x2F;36、1&#x2F;36。</li>
+</ol>
+<p>我們可以觀察到，在第一個群組中，我們給定了三種不同的 random experiment ，卻有極相似的 probability measure。在第二個群組中，我們給定了兩個一樣的 random experiment ，卻衍伸從不一樣角度定義機率測度的方法。</p>
+<p>這兩個問題我想就是隨機變數核心的作用。在後面的說明會看到，隨機變數會把 outcome map 到實數，接著我們就把對原本機率空間的測度，推到這個新的實數空間來進行。</p>
+<p>那為什麼要到實數空間進行呢 ? 以上述兩個群組來做說明。</p>
+<ul>
+<li>在第一個群組中，由於這三個不同的機率空間，會推到一樣的實數空間 (因為都具有同樣的 6 個東西 uniform 的性質，我們只要去構造一個映射的關係，也就是隨機變數，就會在一樣的實數空間上)，我們就可以複用這個實數的空間去進行後續的探討。</li>
+<li>在第二個群組中，其中心思想在於，即使在同一個機率空間，我們所關心的事件也可能不盡相同，因此 outcome map 出去的實數，也可以有所不同。透過這樣去獲得不同的實數機率空間，得以讓我們僅關注在我們所關注的事件其所具有的性質上，並且利用具有這個性質的實數空間進行探討以簡化問題。</li>
+</ul>
+<p>綜合而言，隨機變數的作用是把以前雜七雜八的 outcome map 到實數上。我們得以就這些實數去進行探討。除此之外，因為我們已先建立了一些實數空間中的模型，只要根據性質去套用模型，就可以複用這些模型的研究結果 (也就是現代機率論所研究的結果)。而把這些 outcome map 到實數上，還能享有把各式各樣的 outcome 去聚焦在一些我們真正關心的事件的福利，起到類似把這些事件壓成一個 outcome 處理的想法，而再進行模型套用就可以針對我們所關心的事件其所具有的性質進行討論。</p>
+<h3 id="第二個理由-實數操作"><a href="#第二個理由-實數操作" class="headerlink" title="第二個理由 實數操作"></a>第二個理由 實數操作</h3><p>上述是比較思想上的理由，接下來是比較操作上的理由。</p>
+<p>隨機變數讓我們得以以簡單的代數符號，去描述某個事件的發生、可能性等等。而變成代數最大的好處是，我們得以就代數進行運算，以發展更複雜的分析與探討。</p>
+<p>以下拿 random sum 做舉例，</p>
+<p>假設我們做一個 random experiment，先骰一個公平六面骰獲得一個點數，接著按照點數的值，進行相對應次數的投擲硬幣實驗，觀察最終硬幣正面朝上的次數。</p>
+<p>像這樣一個如此複雜的實驗，我們很難洞見應該如何合理的分配機率測度。</p>
+<p>但是我們可以假設一個公平六面骰的點數是隨機變數 $N$ ， $N$ 有可能是 1~6 其中一個實數，機率為 1&#x2F;6。並且每次硬幣實驗的結果是隨機變數 $H_i$ ， $H_i$ 有可能是正面朝上 1 ，反面朝上 0 ，機率各為 1&#x2F;2。</p>
+<p>到這裡的分配都是簡單又合理。而我們如此複雜的結果，就能用代數的方式建構出來 $H_1+H_2+…+H_N$。</p>
+<p>而利用這個代數式，我們就有方法去分配合理的機率測度，或者是探討其他性質了。</p>
+<h2 id="隨機變數-Random-Variable"><a href="#隨機變數-Random-Variable" class="headerlink" title="隨機變數 (Random Variable)"></a>隨機變數 (Random Variable)</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>隨機變數是一個 function 把 sample space 中的 outcome 映射到一個實數。</p>
+<p>e.g. 做一個 random experiment 觀察第一通電話的到來與第二通電話的到來的間隔。隨機變數可以是第一通電話的到來與第二通電話的到來的間隔秒數。 (把 outcome $t$ 秒 map 到實數 $t$)</p>
+<h3 id="Formal-Definition"><a href="#Formal-Definition" class="headerlink" title="Formal Definition"></a>Formal Definition</h3><blockquote>
+<p>這部分似乎和測度論有點關係，但畢竟我不是數學專業，這只是我這陣子粗淺的想法，歡迎指正。</p>
+</blockquote>
+<h3 id="Notation-X-x"><a href="#Notation-X-x" class="headerlink" title="Notation $X&#x3D;x$"></a>Notation $X&#x3D;x$</h3><p>{$X&#x3D;x$} means that {$s \in S|X(s)&#x3D;x$}。</p>
+<h4 id="Measurable-Space"><a href="#Measurable-Space" class="headerlink" title="Measurable Space"></a>Measurable Space</h4><p>一個 measurable space $(B, \mathbb{B})$ 包含一個集合 $B$ ，和一個在此集合上的 $\sigma$-field $\mathbb{B}$。</p>
+<h4 id="Measurable-Function"><a href="#Measurable-Function" class="headerlink" title="Measurable Function"></a>Measurable Function</h4><p>如果 $(A, \mathbb{A})$, $(B, \mathbb{B})$ 是兩個 measurable space, function $f: A \to B$ 稱為 measurable function if and only if</p>
+<p>$f^{-1}(b) \in \mathbb{A}, \forall b \in \mathbb{B}$ (對於所有在 $B$ 中我們想測量的集合，在映射前的 $A$ 中皆可測量)。</p>
+<h4 id="Real-Valued-Random-Variable"><a href="#Real-Valued-Random-Variable" class="headerlink" title="Real-Valued Random Variable"></a>Real-Valued Random Variable</h4><p>$(S,\mathbb{F},P)$ 是一個 probability space。 RV (Random Variable) 是一個 measurable function $X:S \to \mathbb{R}$ s.t. {$s \in S | X(s) \in b$}, $\forall b \in \mathbb{B}$, where $b$ is borel set, $\mathbb{B}$ is borel $\sigma$-field。</p>
+<h4 id="Simplified-Definition"><a href="#Simplified-Definition" class="headerlink" title="Simplified Definition"></a>Simplified Definition</h4><p>$(S,\mathbb{F},P)$ 是一個 probability space。 RV (Random Variable) 是一個 measurable function $X:S \to \mathbb{R}$ s.t. {$s \in S | X(s) \leq x$}, $\forall x \in \mathbb{R}$。</p>
+<p>(因為只要 $(-\infty, x]$ 這些集合皆可測度，所有 borel sets 皆可測度。)</p>
+<h3 id="Push-Forward-Measure"><a href="#Push-Forward-Measure" class="headerlink" title="Push-Forward Measure"></a>Push-Forward Measure</h3><p>給定 $(S,\mathbb{F},P)$ 是一個 probability space，以及一個隨機變數 $X:S \to \mathbb{R}$。</p>
+<p>The push-forward measure of $P$ by $X$ is $P_X:\mathbb{R} \to [0,1]$ s.t. $P_X[B] &#x3D; P[X^{-1}(B)]$, $\forall B \in \mathbb{B}$.</p>
+<p>其中 $X^{-1}(B)&#x3D;${$s \in S| X(s) \in B$}。</p>
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>這麼雜的定義似乎有點難看懂。簡單來說，隨機變數把 outcome 映射到 實數。接著我們定義由 $X$ 這個隨機變數 induce 的 measure $P_X$，這個測度定義在 $(\mathbb{R}, \mathbb{B})$ 上，但是和原本的 probability space 有強烈的關聯 (詳細定義如上)。我們就可藉由討論這個 $X$ 引出的新的 prbability space $(\mathbb{R}, \mathbb{B}, P_X)$，去發展一些有趣的結果。</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>用前面討論使用隨機變數的原因時，第一個理由的第 1, 2 個例子作為範例。</p>
+<blockquote>
+<p>對於一個公平的六面骰，我們通常會定義，骰子骰到 1、2、3、4、5、6 這 6 種事件的機率分別都是 1&#x2F;6。</p>
+</blockquote>
+<p>我們定義隨機變數 $X$ 為公平的六面骰骰出的點數。 i.e. 我們把 outcome 一點 map 到實數 $1$、 outcome 兩點 map 到實數 $2$、…。</p>
+<p>而 push-forward 的 probability measure $P_X$ 會滿足,</p>
+<p>$P_X(${$1$}$)&#x3D;P_X(${$2$}$)&#x3D;P_X(${$3$}$)&#x3D;P_X(${$4$}$)&#x3D;P_X(${$5$}$)&#x3D;P_X(${$6$}$)&#x3D;1&#x2F;6$, <br/><br>$P_X((-\infty,4])&#x3D;2&#x2F;3$, $P_X((2,4])&#x3D;1&#x2F;3$。</p>
+<blockquote>
+<p>Note: 我們原本說，一個 probability measure 只要符合機率三公理，愛怎麼訂就怎麼訂。而 push-forward 出來的 probability measure 需要原本 probability space 的 probability measure 有某種關聯性，是為不同之處。</p>
+</blockquote>
+<blockquote>
+<p>假設有六個盒子，其中一個盒子內裝有一顆球，我們通常會定義，編號 1、2、3、4、5、6 的盒子內藏有球這 6 種事件的機率分別都是 1&#x2F;6。</p>
+</blockquote>
+<p>我們定義隨機變數 $Y$ 為第幾個編號的盒子內藏有球。 i.e. 我們把 outcome 第一個盒子藏有球 map 到實數 $1$、 outcome 第二個盒子藏有球 map 到實數 $2$、…。</p>
+<p>而 push-forward 的 probability measure $P_Y$ 會滿足,</p>
+<p>$P_Y(${$1$}$)&#x3D;P_Y(${$2$}$)&#x3D;P_Y(${$3$}$)&#x3D;P_Y(${$4$}$)&#x3D;P_Y(${$5$}$)&#x3D;P_Y(${$6$}$)&#x3D;1&#x2F;6$, <br/><br>$P_Y((-\infty,4])&#x3D;2&#x2F;3$, $P_Y((2,4])&#x3D;1&#x2F;3$。</p>
+<blockquote>
+<p>這裡的 $X$, $Y$ 有一模一樣的 probability measure，而且都在 $(\mathbb{R}, \mathbb{B})$ 這個可測度空間上。或許我們可以說，他們兩個引出的 probability space 有一模一樣的分布。<br>而我想這正是隨機變數的其中一個用途，我們可以先研究這些常見的 probability space，再經由隨機變數把各式各樣的 probability space 映射我們熟悉的這個 probability space。</p>
+</blockquote>
+<h3 id="Support"><a href="#Support" class="headerlink" title="Support"></a>Support</h3><p>The smallest closed set $B \subset \mathbb{R}$ s.t. $P[X \in B]&#x3D;1$ is called the support of RV $X$.</p>
+<p>記做 $S_X$。</p>
+<p>e.g. 對於一個公平的六面骰，我們通常會定義，骰子骰到 1、2、3、4、5、6 這 6 種事件的機率分別都是 1&#x2F;6。</p>
+<p>我們定義隨機變數 $X$ 為公平的六面骰骰出的點數。則 $S_X&#x3D;${$1, 2, 3, 4, 5, 6$}</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/blog/tags/Computer-Science/" rel="tag"><i class="fa fa-tag"></i> Computer Science</a>
+              <a href="/blog/tags/Probability/" rel="tag"><i class="fa fa-tag"></i> Probability</a>
+              <a href="/blog/tags/Mathematics/" rel="tag"><i class="fa fa-tag"></i> Mathematics</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2024/07/11/Conditional-probability-and-independent-events/" rel="prev" title="條件機率及獨立事件">
+      <i class="fa fa-chevron-left"></i> 條件機率及獨立事件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2024/07/16/python-dictionary-time-complexity/" rel="next" title="Python Dictionary 插入、刪除操作之時間複雜度探討">
+      Python Dictionary 插入、刪除操作之時間複雜度探討 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80-%E4%BB%80%E9%BA%BC%E6%98%AF%E9%9A%A8%E6%A9%9F%E8%AE%8A%E6%95%B8-Random-Variable-%E5%8F%8A%E7%82%BA%E4%BB%80%E9%BA%BC%E9%9C%80%E8%A6%81%E9%9A%A8%E6%A9%9F%E8%AE%8A%E6%95%B8"><span class="nav-number">1.</span> <span class="nav-text">前言 什麼是隨機變數 (Random Variable) 及為什麼需要隨機變數</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E5%80%8B%E7%90%86%E7%94%B1-%E8%A4%87%E7%94%A8%E6%A9%9F%E7%8E%87%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">第一個理由 複用機率模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E5%80%8B%E7%90%86%E7%94%B1-%E5%AF%A6%E6%95%B8%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.</span> <span class="nav-text">第二個理由 實數操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%A8%E6%A9%9F%E8%AE%8A%E6%95%B8-Random-Variable"><span class="nav-number">2.</span> <span class="nav-text">隨機變數 (Random Variable)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Definition"><span class="nav-number">2.1.</span> <span class="nav-text">Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Formal-Definition"><span class="nav-number">2.2.</span> <span class="nav-text">Formal Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Notation-X-x"><span class="nav-number">2.3.</span> <span class="nav-text">Notation $X&#x3D;x$</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Measurable-Space"><span class="nav-number">2.3.1.</span> <span class="nav-text">Measurable Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Measurable-Function"><span class="nav-number">2.3.2.</span> <span class="nav-text">Measurable Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Real-Valued-Random-Variable"><span class="nav-number">2.3.3.</span> <span class="nav-text">Real-Valued Random Variable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Simplified-Definition"><span class="nav-number">2.3.4.</span> <span class="nav-text">Simplified Definition</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Push-Forward-Measure"><span class="nav-number">2.4.</span> <span class="nav-text">Push-Forward Measure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Summary"><span class="nav-number">2.5.</span> <span class="nav-text">Summary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">2.6.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Support"><span class="nav-number">2.7.</span> <span class="nav-text">Support</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <div class="site-author-image-container">
+    <img class="site-author-image" itemprop="image" alt="pooiscoding"
+      src="https://i.imgur.com/McrVyGM.jpg">
+    <div class="site-author-image-inner-container">
+      <img class="site-author-inner-image" itemprop="image" alt="pooiscoding"
+        src="https://i.imgur.com/McrVyGM.jpg">
+    </div>
+  </div>
+  <p class="site-author-name" itemprop="name">pooiscoding</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pooiscoding</span>
+</div><div>
+  <span id="sitetime"></span>
+  <script language=javascript>
+      function siteTime(){
+          window.setTimeout("siteTime()", 1000);
+          var seconds = 1000;
+          var minutes = seconds * 60;
+          var hours = minutes * 60;
+          var days = hours * 24;
+          var years = days * 365;
+          var today = new Date();
+          var todayYear = today.getFullYear();
+          var todayMonth = today.getMonth()+1;
+          var todayDate = today.getDate();
+          var todayHour = today.getHours();
+          var todayMinute = today.getMinutes();
+          var todaySecond = today.getSeconds();
+          /* 
+          Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+          year - 作为date对象的年份，为4位年份值
+          month - 0-11之间的整数，做为date对象的月份
+          day - 1-31之间的整数，做为date对象的天数
+          hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+          minutes - 0-59之间的整数，做为date对象的分钟数
+          seconds - 0-59之间的整数，做为date对象的秒数
+          microseconds - 0-999之间的整数，做为date对象的毫秒数
+      */
+          var t1 = Date.UTC(2024,7,9,15,37,34); //北京时间2018-2-13 00:00:00
+          var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+          var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML="Poo's blog has run for "+/*diffYears+" years "+*/diffDays+" days "+diffHours+" hours "+diffMinutes+" minutes "+diffSeconds+" seconds";
+    }
+      siteTime();
+  </script>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
