@@ -20,23 +20,22 @@
     var CONFIG = {"hostname":"pooiscoding.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="探討 python dictionary 在維護有插入順序的情況下，插入、刪除操作的時間複雜度。(同場加映 平衡二元搜尋樹 和 hash table 實作字典的差別)">
+  <meta name="description" content="簡介離散隨機變數，Probability Mass Function、Cumulative Distribution Function。以及連續隨機變數，Probability Density Function。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python Dictionary 插入、刪除操作之時間複雜度探討">
-<meta property="og:url" content="https://pooiscoding.github.io/blog/2024/07/16/python-dictionary-time-complexity/index.html">
+<meta property="og:title" content="離散隨機變數與連續隨機變數">
+<meta property="og:url" content="https://pooiscoding.github.io/blog/2024/07/16/DisRV-PMF-CDF-CtsRV-PDF-CDF/index.html">
 <meta property="og:site_name" content="Poo&#39;s Blog">
-<meta property="og:description" content="探討 python dictionary 在維護有插入順序的情況下，插入、刪除操作的時間複雜度。(同場加映 平衡二元搜尋樹 和 hash table 實作字典的差別)">
+<meta property="og:description" content="簡介離散隨機變數，Probability Mass Function、Cumulative Distribution Function。以及連續隨機變數，Probability Density Function。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-07-16T09:15:27.000Z">
-<meta property="article:modified_time" content="2024-07-16T15:48:22.332Z">
+<meta property="article:published_time" content="2024-07-16T09:07:19.000Z">
+<meta property="article:modified_time" content="2024-08-03T16:38:49.380Z">
 <meta property="article:author" content="pooiscoding">
 <meta property="article:tag" content="Computer Science">
-<meta property="article:tag" content="Datastructure &amp; Algorithm">
-<meta property="article:tag" content="Hash Table">
-<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Probability">
+<meta property="article:tag" content="Mathematics">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://pooiscoding.github.io/blog/2024/07/16/python-dictionary-time-complexity/">
+<link rel="canonical" href="https://pooiscoding.github.io/blog/2024/07/16/DisRV-PMF-CDF-CtsRV-PDF-CDF/">
 
 
 <script id="page-configurations">
@@ -49,7 +48,7 @@
   };
 </script>
 
-  <title>Python Dictionary 插入、刪除操作之時間複雜度探討 | Poo's Blog</title>
+  <title>離散隨機變數與連續隨機變數 | Poo's Blog</title>
   
 
 
@@ -159,7 +158,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://pooiscoding.github.io/blog/2024/07/16/python-dictionary-time-complexity/">
+    <link itemprop="mainEntityOfPage" href="https://pooiscoding.github.io/blog/2024/07/16/DisRV-PMF-CDF-CtsRV-PDF-CDF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.imgur.com/McrVyGM.jpg">
@@ -172,7 +171,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Python Dictionary 插入、刪除操作之時間複雜度探討
+          離散隨機變數與連續隨機變數
         </h1>
 
         <div class="post-meta">
@@ -181,10 +180,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-07-16 17:15:27 / Modified: 23:48:22" itemprop="dateCreated datePublished" datetime="2024-07-16T17:15:27+08:00">2024-07-16</time>
+              <time title="Created: 2024-07-16 17:07:19" itemprop="dateCreated datePublished" datetime="2024-07-16T17:07:19+08:00">2024-07-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-04 00:38:49" itemprop="dateModified" datetime="2024-08-04T00:38:49+08:00">2024-08-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -195,7 +200,7 @@
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/blog/categories/Computer-Science/Datastructure-Algorithm/" itemprop="url" rel="index"><span itemprop="name">Datastructure & Algorithm</span></a>
+                  <a href="/blog/categories/Computer-Science/Probability/" itemprop="url" rel="index"><span itemprop="name">Probability</span></a>
                 </span>
             </span>
 
@@ -205,16 +210,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.5k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>6 mins.</span>
+              <span>4 mins.</span>
             </span>
-            <div class="post-description">探討 python dictionary 在維護有插入順序的情況下，插入、刪除操作的時間複雜度。(同場加映 平衡二元搜尋樹 和 hash table 實作字典的差別)</div>
+            <div class="post-description">簡介離散隨機變數，Probability Mass Function、Cumulative Distribution Function。以及連續隨機變數，Probability Density Function。</div>
 
         </div>
       </header>
@@ -225,37 +230,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="問題起源"><a href="#問題起源" class="headerlink" title="問題起源"></a>問題起源</h2><p>本篇文章主要想要探討 python 語言中 dictionary 這種資料型別，插入、刪除的時間複雜度。</p>
-<p>對於有 computer science 背景的讀者可能會認為，python dictionary 的本質不就是個 hash table 實作的字典嗎 ? 不論他是怎麼詳細實作的，直觀就是插入 $O(1)$ 刪除 $O(1)$ 有什麼討論的必要嗎 ?</p>
-<p>事實上，這也是我最一開始接觸到 python dictionary 的想法。直到某一天我嘗試了以下的程式碼，發現案情並不單純。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python 3.10.X</span></span><br><span class="line">dic1 = &#123;&#125;</span><br><span class="line">dic1[<span class="string">&#x27;a&#x27;</span>] = <span class="number">1</span></span><br><span class="line">dic1[<span class="string">&#x27;b&#x27;</span>] = <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(dic1) <span class="comment"># &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2&#125;</span></span><br><span class="line"></span><br><span class="line">dic2 = &#123;&#125;</span><br><span class="line">dic2[<span class="string">&#x27;b&#x27;</span>] = <span class="number">2</span></span><br><span class="line">dic2[<span class="string">&#x27;a&#x27;</span>] = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(dic2) <span class="comment"># &#123;&#x27;b&#x27;: 2, &#x27;a&#x27;: 1&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果 python dictionary 是個單純只依靠 hash table 實作的字典，是不可能會有這樣的結果差別的。會這麼論述的理由是因為單純只靠 hash table 這種資料結構並沒有留住插入順序的能力。但很明顯地， python dictionary 維護住了插入順序，這其中必定有不為人知的秘密。</p>
-<p>那麼 python dictionary 的資料結構究竟為何呢 ? 插入、刪除操作的時間複雜度又為何呢 ? 我好奇地去翻了 CPython 的 source code。先講結論， python dictionary 是用 hash table 再加上陣列來實作的。時間複雜度我認為是均攤 插入 $O(1)$ 刪除 $O(1)$。<br/><br>へ– 如果是 hash table 怎麼在留住了插入順序的同時還能有這麼好的複雜度呢 ? 這就是本篇要討論的 python dictionary 實際上多做了什麼來達成這樣的黑科技。</p>
+        <h2 id="離散隨機變數-Discrete-Random-Variable"><a href="#離散隨機變數-Discrete-Random-Variable" class="headerlink" title="離散隨機變數 (Discrete Random Variable)"></a>離散隨機變數 (Discrete Random Variable)</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>Support 是 discrete 的隨機變數。(可以是 finite 或 infinite)</p>
+<p>或者更精準的說 support 是 countable 的集合。</p>
+<h3 id="Probability-Mass-Function-PMF"><a href="#Probability-Mass-Function-PMF" class="headerlink" title="Probability Mass Function (PMF)"></a>Probability Mass Function (PMF)</h3><p>對於離散的隨機變數 $X$ 其 PMF 為</p>
+<p>$P_X(x)&#x3D;P[${$s|X(s)&#x3D;x$}$]&#x3D;P[X&#x3D;x]$</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>投擲一個出現正面機率為 3&#x2F;4 的硬幣。</p>
+<p>定義隨機變數 $X$ 為正面出現與否，出現為 1 ，不出現為 0。</p>
+<p>則隨機變數 $X$ 的 PMF 為:</p>
+<p>$$P_X(x)&#x3D; \\<br>    \begin{cases}<br>        \frac{1}{4} &amp; x&#x3D;0 \\<br>        \frac{3}{4} &amp; x&#x3D;1 \\<br>        0 &amp; \text{otherwise}<br>    \end{cases}<br>$$</p>
 <blockquote>
-<p>如果有較以前接觸 python 的 coder ，一定會覺得上面這段狗屁不通。因為 python 是在 3.6.X 版本後才讓 python dictionary 多了維護插入順序的能力。因此有利用此性質在寫程式的讀者也要注意一下自己的 python 版本喔。(筆者曾經有過想要利用此性質，但沒注意到 python 版本不對的經驗，除錯除了好久)</p>
+<p>Note: 注意 PMF 是一個 domain 為 $\mathbb{R}$ 的函式，因此除了 support 內的 x 值要標示其機率及對應的 x ，沒有在 support 內的也要用 otherwise 0 來說清楚。</p>
 </blockquote>
-<h2 id="資料結構"><a href="#資料結構" class="headerlink" title="資料結構"></a>資料結構</h2><p>在我拜讀了 CPython 關於 dictionary 的內容及其提供的文章後，我得到了以下的結論。</p>
-<p>python dictionary 本質上是 hash table ，採用 open addressing 和 quadratic probing 來解決 collision 的問題。</p>
-<p>至於空間不夠的問題，是在 load factor 達到約 2&#x2F;3 時，會動態地擴大儲存空間，並把所有資料拿出來重新 hash 一次。</p>
-<p>那麼重頭戲來了，它是如何解決插入順序的問題的呢 ?</p>
-<p>實際上 python dictionary 會先把真實的資料按插入順序放在一個陣列裡頭。hash table 中儲存的內容其實是一個指標，指向陣列中資料的位置。</p>
-<p>而插入順序自然而然就維護住了，畢竟只要拿這個儲存資料的陣列來看，就既清楚又明瞭了。</p>
-<p>Wait wait wait，不要騙我沒學過資結欸，這樣刪除一筆資料的時候就要大搬家了不是嗎 ? 插入複雜度雖然不變，但刪除就要 $O(n)$ 欸。</p>
-<p>這裡的解法我認為和 C++ 的 vector 有一點雷同，我們在刪除一個、兩個的時候，就單純把陣列裡儲存這些資料的地方，標示為已刪除、留空。而直到被刪除的格子多到一定的程度的時候，我們才重新把這些東西通通拿出來重排一次。</p>
-<p>這樣的實作雖然還是要搬家，但久久只會一次，均攤時間複雜度仍然是 插入 $O(1)$ 刪除 $O(1)$。</p>
-<blockquote>
-<p>這個做法蠻合理並且蠻聰明的，但我認為並不是這麼理所當然，因此在談論到 python dictionary 時，除了 hash table ，還需要特別提出這個結構。<br>會寫這篇文章主因是，當初思考到這個問題時，我查了網路上不少文章，這些文章在談到 python dictionary 時都會很不客氣地說，它就是 hash table ，插入刪除均常數時間。但我認為這樣的說法不夠精確，他們沒有描述到除了 hash table 外，還做了什麼樣額外的事去維護住插入順序。並且單一次的操作就不會是常數時間，是均攤下來單一次操作為常數時間。</p>
-</blockquote>
-<h2 id="同場加映-平衡二元搜尋樹-和-hash-table-實作字典的差別"><a href="#同場加映-平衡二元搜尋樹-和-hash-table-實作字典的差別" class="headerlink" title="同場加映: 平衡二元搜尋樹 和 hash table 實作字典的差別"></a>同場加映: 平衡二元搜尋樹 和 hash table 實作字典的差別</h2><p>這裡要談論的兩者區別，並不是在資料結構實作、時間複雜度的層次上，而是實作字典情境上的區別。</p>
-<p>我們都知道，平衡二元搜尋樹的字典插入和刪除均為 $O(lg(n))$，hash table 的字典則可以做到插入和刪除均攤 $O(1)$。那為什麼還會有平衡二元搜尋樹的需求呢 ?</p>
-<p>主要是因為，平衡二元搜尋樹維護住了順序。</p>
-<p>へ– 前面不是才提到 hash table 維護住了插入順序還是可以做到均攤 $O(1)$ 嗎 ?</p>
-<p>平衡二元搜尋樹所維護的順序是 key 的順序性，這就不是 hash table 能辦到的了。</p>
-<p>比方說我們想要在字典中查詢，key 在 0~10 之間的 data 之最大值。hash table 可能得要 0, 1, 2, …, 10 這樣一筆一筆的查找，時間複雜度為 $O(n)$。但是平衡二元搜尋樹只要維護得當，就可以做到 $O(lg(n))$ 的區間查找。</p>
-<p>除此之外，假設我們想要 key 比 5 小的最大的 key 的資料 (也就是 key&#x3D;5 的前面一個 key-value) 。hash table 可能得要 5, 4, 3, 2, 1, 0 這樣一筆一筆的查找前一個  key，時間複雜度為 $O(n)$。但是平衡二元搜尋樹可以 $O(lg(n))$ 非常快的找到 predecessor。</p>
-<p>也就是說，當我們注重 key 的順序， key 的性質時，用保有這個性質的平衡二元搜尋樹會比較優，用 hash table 會相對較差。</p>
-<p>實際的情況像是資料庫，我們有時可能會想要查詢滿足某個條件的資料 (例如: 商品價格在 1000~3000 間的資料)，用平衡二元搜尋樹來實作就會有較好的時間複雜度。因此實務上，這兩種資料結構會有各自被需要的情境。</p>
+<h4 id="Properties-of-PMF"><a href="#Properties-of-PMF" class="headerlink" title="Properties of PMF"></a>Properties of PMF</h4><ol>
+<li>$P_X(x) \geq 0$</li>
+<li>$\sum_{x \in S_X}P_X(x)&#x3D;1$</li>
+<li>$P[B]&#x3D;\sum_{x \in B}P_X(x)$, for any $B \subset S_X$</li>
+</ol>
+<h3 id="Cumulative-Distribution-Function-CDF"><a href="#Cumulative-Distribution-Function-CDF" class="headerlink" title="Cumulative Distribution Function (CDF)"></a>Cumulative Distribution Function (CDF)</h3><p>對於離散的隨機變數 $X$ 其 CDF 為</p>
+<p>$F_X(x)&#x3D;P[${$s|X(s)\leq x$}$]&#x3D;P[X\leq x]$</p>
+<p>可以用 PMF 來推得。</p>
+<h4 id="Complementary-CDF-CCDF"><a href="#Complementary-CDF-CCDF" class="headerlink" title="Complementary CDF (CCDF)"></a>Complementary CDF (CCDF)</h4><p>$S_X(x)&#x3D;P[${$s|X(s)&gt; x$}$]&#x3D;P[X&gt; x]&#x3D;1-F_X(x)$</p>
+<h4 id="Properties-of-CDF"><a href="#Properties-of-CDF" class="headerlink" title="Properties of CDF"></a>Properties of CDF</h4><ol>
+<li>$F_X(-\infty)&#x3D;0$, $F_X(\infty)&#x3D;1$</li>
+<li>For $x\geq x’$, $F_X(x) \geq F_X(x’)$ (non-decreasing)</li>
+<li>For $x_i \in S_X$, and an arbitrary small positive number $\epsilon$, $F_X(x_i)-F_X(x_i-\epsilon)&#x3D;P_X(x)$ (right-continuous)</li>
+<li>For $b\geq a$, $P[a&lt;X\leq b] &#x3D; F_X(b)-F_X(a)$ (notice open or close of this inequaility)</li>
+</ol>
+<h3 id="小總結"><a href="#小總結" class="headerlink" title="小總結"></a>小總結</h3><p>在前一篇文章中，大概了解了隨機變數是什麼，緊接著我們先來看 support 是離散的離散隨機變數。<br>我們知道隨機變數把原本的機率空間 push 到新的實數機率空間，而我們嘗試想要描述這個實數機率空間的分布情況。<br>對於離散隨機變數，由於 support 是離散的，我們可以用 PMF 這個函式來描述 $X&#x3D;x$ 時各種不同 $x$ 對應到的機率值。 <br/><br>除此之外，也可以用 CDF 這個函式來描述 $X\leq x$ 時各種不同 $x$ 對應到的機率值。</p>
+<h2 id="連續隨機變數-Continuous-Random-Variable"><a href="#連續隨機變數-Continuous-Random-Variable" class="headerlink" title="連續隨機變數 (Continuous Random Variable)"></a>連續隨機變數 (Continuous Random Variable)</h2><h3 id="Definition-1"><a href="#Definition-1" class="headerlink" title="Definition"></a>Definition</h3><ol>
+<li>support 是 uncountable 的集合</li>
+<li>CDF 是連續函數</li>
+</ol>
+<h3 id="How-to-describe-the-distribution"><a href="#How-to-describe-the-distribution" class="headerlink" title="How to describe the distribution"></a>How to describe the distribution</h3><p>離散隨機變數的 PMF 和 CDF 是兩個非常直觀，可以用來描述分布的函式。因此對於連續隨機變數，我們想要複用這兩個函式。但是問題來了，我們可以這麼做嗎 ?</p>
+<p>我們以以下的例子來考慮:</p>
 
     </div>
 
@@ -267,9 +274,8 @@
           
           <div class="post-tags">
               <a href="/blog/tags/Computer-Science/" rel="tag"><i class="fa fa-tag"></i> Computer Science</a>
-              <a href="/blog/tags/Datastructure-Algorithm/" rel="tag"><i class="fa fa-tag"></i> Datastructure & Algorithm</a>
-              <a href="/blog/tags/Hash-Table/" rel="tag"><i class="fa fa-tag"></i> Hash Table</a>
-              <a href="/blog/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+              <a href="/blog/tags/Probability/" rel="tag"><i class="fa fa-tag"></i> Probability</a>
+              <a href="/blog/tags/Mathematics/" rel="tag"><i class="fa fa-tag"></i> Mathematics</a>
           </div>
 
         
@@ -278,12 +284,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/blog/2024/07/16/DisRV-PMF-CDF-CtsRV-PDF-CDF/" rel="prev" title="離散隨機變數與連續隨機變數">
-      <i class="fa fa-chevron-left"></i> 離散隨機變數與連續隨機變數
+    <a href="/blog/2024/07/13/Random-variable/" rel="prev" title="隨機變數的定義">
+      <i class="fa fa-chevron-left"></i> 隨機變數的定義
     </a></div>
       <div class="post-nav-item">
-    <a href="/blog/2024/08/17/Leetcode-Daily-240817/" rel="next" title="LeetCode_Daily_240817">
-      LeetCode_Daily_240817 <i class="fa fa-chevron-right"></i>
+    <a href="/blog/2024/07/16/python-dictionary-time-complexity/" rel="next" title="Python Dictionary 插入、刪除操作之時間複雜度探討">
+      Python Dictionary 插入、刪除操作之時間複雜度探討 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -343,7 +349,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E8%B5%B7%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text">問題起源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B"><span class="nav-number">2.</span> <span class="nav-text">資料結構</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E5%A0%B4%E5%8A%A0%E6%98%A0-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%85%83%E6%90%9C%E5%B0%8B%E6%A8%B9-%E5%92%8C-hash-table-%E5%AF%A6%E4%BD%9C%E5%AD%97%E5%85%B8%E7%9A%84%E5%B7%AE%E5%88%A5"><span class="nav-number">3.</span> <span class="nav-text">同場加映: 平衡二元搜尋樹 和 hash table 實作字典的差別</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%A2%E6%95%A3%E9%9A%A8%E6%A9%9F%E8%AE%8A%E6%95%B8-Discrete-Random-Variable"><span class="nav-number">1.</span> <span class="nav-text">離散隨機變數 (Discrete Random Variable)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Definition"><span class="nav-number">1.1.</span> <span class="nav-text">Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Probability-Mass-Function-PMF"><span class="nav-number">1.2.</span> <span class="nav-text">Probability Mass Function (PMF)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example"><span class="nav-number">1.2.1.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Properties-of-PMF"><span class="nav-number">1.2.2.</span> <span class="nav-text">Properties of PMF</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cumulative-Distribution-Function-CDF"><span class="nav-number">1.3.</span> <span class="nav-text">Cumulative Distribution Function (CDF)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Complementary-CDF-CCDF"><span class="nav-number">1.3.1.</span> <span class="nav-text">Complementary CDF (CCDF)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Properties-of-CDF"><span class="nav-number">1.3.2.</span> <span class="nav-text">Properties of CDF</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%B8%BD%E7%B5%90"><span class="nav-number">1.4.</span> <span class="nav-text">小總結</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%A3%E7%BA%8C%E9%9A%A8%E6%A9%9F%E8%AE%8A%E6%95%B8-Continuous-Random-Variable"><span class="nav-number">2.</span> <span class="nav-text">連續隨機變數 (Continuous Random Variable)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Definition-1"><span class="nav-number">2.1.</span> <span class="nav-text">Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-describe-the-distribution"><span class="nav-number">2.2.</span> <span class="nav-text">How to describe the distribution</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

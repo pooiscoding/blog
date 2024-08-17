@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"pooiscoding.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="LeetCode Daily 2024-08-17 解題紀錄">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode_Daily_240817">
+<meta property="og:url" content="https://pooiscoding.github.io/blog/2024/08/17/Leetcode-Daily-240817/index.html">
+<meta property="og:site_name" content="Poo&#39;s Blog">
+<meta property="og:description" content="LeetCode Daily 2024-08-17 解題紀錄">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-08-17T07:58:12.000Z">
+<meta property="article:modified_time" content="2024-08-17T09:36:55.206Z">
+<meta property="article:author" content="pooiscoding">
+<meta property="article:tag" content="Computer Science">
+<meta property="article:tag" content="LeetCode">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://pooiscoding.github.io/blog/2024/08/17/Leetcode-Daily-240817/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>LeetCode_Daily_240817 | Poo's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Poo's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://pooiscoding.github.io/blog/2024/08/17/Leetcode-Daily-240817/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/McrVyGM.jpg">
+      <meta itemprop="name" content="pooiscoding">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Poo's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LeetCode_Daily_240817
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-08-17 15:58:12 / Modified: 17:36:55" itemprop="dateCreated datePublished" datetime="2024-08-17T15:58:12+08:00">2024-08-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/" itemprop="url" rel="index"><span itemprop="name">Computer Science</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Computer-Science/LeetCode-Daily/" itemprop="url" rel="index"><span itemprop="name">LeetCode Daily</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+            <div class="post-description">LeetCode Daily 2024-08-17 解題紀錄</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-number-of-points-with-cost/description/">題目網址</a></p>
+<h2 id="事前分析"><a href="#事前分析" class="headerlink" title="事前分析"></a>事前分析</h2><h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><h4 id="Alg"><a href="#Alg" class="headerlink" title="Alg"></a>Alg</h4><p>用 Recursion 的做法，我們可以定義 $f(i,j)$ 是考慮第 1~i 列，選擇了第 i 列第 j 行的元素，所能得到的最大點數。</p>
+<p>$$f(i,j)&#x3D; \\<br>    \begin{cases}<br>        \mathop{\max}_{1 \leq k \leq m}f(i-1,k)+points[i][j]-|j-k| &amp; i&gt;1 \\<br>        points[i][j] &amp; i&#x3D;1 \\<br>    \end{cases}<br>$$</p>
+<p>然後答案就會是 $\mathop{\max}_{1\leq k \leq m}f(n,k)$</p>
+<h4 id="Time-Complexity"><a href="#Time-Complexity" class="headerlink" title="Time Complexity"></a>Time Complexity</h4><p>$O(m^n)$ (每一個問題延伸出 $m$ 個子問題，共有 $n-1$ 層這樣的結構，共要解 $m$ 個這樣的問題)</p>
+<p>因為 $m$, $n$ 量級用此複雜度的演算法絕對跑不完，故直接否決 Recursion 做法。</p>
+<h3 id="Dynamic-Programming"><a href="#Dynamic-Programming" class="headerlink" title="Dynamic Programming"></a>Dynamic Programming</h3><h4 id="Observation"><a href="#Observation" class="headerlink" title="Observation"></a>Observation</h4><p>從遞迴的使用不難發覺，每個問題可以由回答更小的子問題來求得答案。<br>原問題得到最大的點數時，子問題也會是最大的點數。<br>子問題間彼此不影響，但有重複的問題要解。<br>因此可以使用 dp 來解決此題。</p>
+<h4 id="Alg-1"><a href="#Alg-1" class="headerlink" title="Alg"></a>Alg</h4><p>定義 <code>dp[i][j]</code> 就是和 $f(i,j)$ 一樣的問題。<br>解 <code>dp[i][j]</code> 的轉移式也和遞迴版本完全一樣，只是 <code>dp[i-1][k]</code> 這些子問題的答案已經被算好，並記錄起來了，因此可以獲取更好的複雜度。</p>
+<p>以下用 python 語法提示來提供 pseudo code</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dp is a n * m array</span></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">from</span> <span class="number">1</span> to m:</span><br><span class="line">    dp[<span class="number">1</span>][j] = points[<span class="number">1</span>][j];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">from</span> <span class="number">2</span> to n:</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">from</span> <span class="number">1</span> to m:</span><br><span class="line">        dp[i][j] = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">from</span> <span class="number">1</span> to m:</span><br><span class="line">            dp[i][j] = <span class="built_in">max</span>(dp[i][j], dp[i-<span class="number">1</span>][k] - <span class="built_in">abs</span>(j-k) + points[i][j])</span><br><span class="line"></span><br><span class="line">ans = <span class="built_in">max</span>(dp[n])</span><br></pre></td></tr></table></figure>
+
+<h4 id="Time-Complexity-1"><a href="#Time-Complexity-1" class="headerlink" title="Time Complexity"></a>Time Complexity</h4><p>第一個 for 是 $O(m)$；最後的 max 是 $O(m)$；中間的三層迴圈是 $O(nm^2)$。故總體時間複雜度為 $O(nm^2)$。</p>
+<p>原本以為到這裡就可以開心結束此題，但事情沒有這麼簡單。<br>我看到了 $n$,$m$ 的範圍，驚覺 $O(nm^2)$ 的時間複雜度依然不足以通過此題，實際一送也得到 TLE 的結果。</p>
+<h2 id="最終解法"><a href="#最終解法" class="headerlink" title="最終解法"></a>最終解法</h2><h3 id="Observation-1"><a href="#Observation-1" class="headerlink" title="Observation"></a>Observation</h3><p>因為題目有給一個 $nm$ 一起的範圍限制，我猜測要把複雜度壓到 $O(nm)$ 才行。</p>
+<p>我觀察了一下 dp 的式子</p>
+<p>$$dp[i][j] &#x3D;\mathop{\max}_{1 \leq k \leq m}dp[i-1][k]+points[i][j]-|j-k|$$</p>
+<p>$$&#x3D;\max\{\mathop{\max}_{1 \leq k \leq j} dp[i-1][k] + k + points[i][j] - j,$$</p>
+<p>$$\mathop{\max}_{j &lt; p \leq m} dp[i-1][p] - p + points[i][j] + j\}$$</p>
+<p>$$&#x3D;\max\{\max\{dp[i-1][k]+k\}-j,\max\{dp[i-1][p]-p\}+j\} + points[i][j]$$</p>
+<p>最後一行省略了 max 的下限。</p>
+<p>我們把最一開始的一個 max 拆成了兩個 max，並且這兩個 max 內的內容和 j 獨立。</p>
+<p>這麼一來我們可以不用在跑 i, j 的迴圈中不斷地再跑 k 的迴圈去運算。而可以在跑 i 時先把我們需要的兩個 max 計算完畢並記錄起來，跑 j 時就可以常數時間拿到最大值。</p>
+<p>這麼說可能不太清楚，直接看 pseudo code。</p>
+<h3 id="Alg-2"><a href="#Alg-2" class="headerlink" title="Alg"></a>Alg</h3><p>以下用 python 語法提示來提供 pseudo code</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dp is a n*m array</span></span><br><span class="line"><span class="comment"># left is a 1*m array, left[i] denotes max(dp[row-1][k] + k) from 1 to i</span></span><br><span class="line"><span class="comment"># right is a 1*m array, right[i] denotes max(dp[row-1][k] - k) from i to m</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">from</span> <span class="number">1</span> to m:</span><br><span class="line">    dp[<span class="number">1</span>][j] = points[<span class="number">1</span>][j]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">from</span> <span class="number">2</span> to n:</span><br><span class="line">    left[<span class="number">1</span>] = dp[i-<span class="number">1</span>][<span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">from</span> <span class="number">2</span> to m:</span><br><span class="line">        left[j] = <span class="built_in">max</span>(left[j-<span class="number">1</span>], dp[i-<span class="number">1</span>][j] + j)</span><br><span class="line"></span><br><span class="line">    right[m] = dp[i-<span class="number">1</span>][m] - m;</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">from</span> m-<span class="number">1</span> to <span class="number">1</span>:</span><br><span class="line">        right[j] = <span class="built_in">max</span>(right[j+<span class="number">1</span>], dp[i-<span class="number">1</span>][j] - j)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">from</span> <span class="number">1</span> to m:</span><br><span class="line">        dp[i][j] = <span class="built_in">max</span>(left[j]-j, right[j]+j) + points[i][j] <span class="comment"># picking right[j] or right[j+1] does not matter</span></span><br><span class="line"></span><br><span class="line">ans = <span class="built_in">max</span>(dp[n])</span><br></pre></td></tr></table></figure>
+
+<p>最後注意到 dp 其實沒有必要開成二維，left 和 right 會把這個 row 會需要的前一個 row 資訊紀錄好。更新 dp 陣列時不會取用前一個 row 的 dp 陣列。<br>因此 dp 可以開成一維陣列即可。</p>
+<h3 id="Time-Complexity-2"><a href="#Time-Complexity-2" class="headerlink" title="Time Complexity"></a>Time Complexity</h3><p>時間複雜度變成 $O(n*3m)&#x3D;O(nm)$，成功瘦身。</p>
+<h3 id="AC-Code"><a href="#AC-Code" class="headerlink" title="AC Code"></a>AC Code</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> max(a, b) (a &gt; b ? a : b)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MMAX 100000</span></span><br><span class="line"></span><br><span class="line"><span class="type">long</span> <span class="type">long</span> <span class="title function_">maxPoints</span><span class="params">(<span class="type">int</span>** points, <span class="type">int</span> pointsSize, <span class="type">int</span>* pointsColSize)</span> &#123;</span><br><span class="line">    <span class="type">int</span> n = pointsSize, m = *pointsColSize;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> dp[MMAX] = &#123;&#123;<span class="number">0</span>&#125;&#125;;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> left_max[MMAX] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> right_max[MMAX] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; m; ++i)</span><br><span class="line">        dp[i] = points[<span class="number">0</span>][i];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; ++i)&#123;</span><br><span class="line">        left_max[<span class="number">0</span>] = dp[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt; m; ++j)</span><br><span class="line">            left_max[j] = max(left_max[j<span class="number">-1</span>], dp[j] + j);</span><br><span class="line"></span><br><span class="line">        right_max[m<span class="number">-1</span>] = dp[m<span class="number">-1</span>] - (m - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = m<span class="number">-2</span>; j &gt;= <span class="number">0</span>; --j)</span><br><span class="line">            right_max[j] = max(right_max[j+<span class="number">1</span>], dp[j] - j);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; m; ++j)</span><br><span class="line">            dp[j] = max(left_max[j]-j, right_max[j]+j) + points[i][j];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; m; ++j)&#123;</span><br><span class="line">        ans = max(ans, dp[j]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/blog/tags/Computer-Science/" rel="tag"><i class="fa fa-tag"></i> Computer Science</a>
+              <a href="/blog/tags/LeetCode/" rel="tag"><i class="fa fa-tag"></i> LeetCode</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2024/07/16/python-dictionary-time-complexity/" rel="prev" title="Python Dictionary 插入、刪除操作之時間複雜度探討">
+      <i class="fa fa-chevron-left"></i> Python Dictionary 插入、刪除操作之時間複雜度探討
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">事前分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Recursion"><span class="nav-number">2.1.</span> <span class="nav-text">Recursion</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Alg"><span class="nav-number">2.1.1.</span> <span class="nav-text">Alg</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Time-Complexity"><span class="nav-number">2.1.2.</span> <span class="nav-text">Time Complexity</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-Programming"><span class="nav-number">2.2.</span> <span class="nav-text">Dynamic Programming</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Observation"><span class="nav-number">2.2.1.</span> <span class="nav-text">Observation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Alg-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">Alg</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Time-Complexity-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">Time Complexity</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%B5%82%E8%A7%A3%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">最終解法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Observation-1"><span class="nav-number">3.1.</span> <span class="nav-text">Observation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alg-2"><span class="nav-number">3.2.</span> <span class="nav-text">Alg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Time-Complexity-2"><span class="nav-number">3.3.</span> <span class="nav-text">Time Complexity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AC-Code"><span class="nav-number">3.4.</span> <span class="nav-text">AC Code</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <div class="site-author-image-container">
+    <img class="site-author-image" itemprop="image" alt="pooiscoding"
+      src="https://i.imgur.com/McrVyGM.jpg">
+    <div class="site-author-image-inner-container">
+      <img class="site-author-inner-image" itemprop="image" alt="pooiscoding"
+        src="https://i.imgur.com/McrVyGM.jpg">
+    </div>
+  </div>
+  <p class="site-author-name" itemprop="name">pooiscoding</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pooiscoding</span>
+</div><div>
+  <span id="sitetime"></span>
+  <script language=javascript>
+      function siteTime(){
+          window.setTimeout("siteTime()", 1000);
+          var seconds = 1000;
+          var minutes = seconds * 60;
+          var hours = minutes * 60;
+          var days = hours * 24;
+          var years = days * 365;
+          var today = new Date();
+          var todayYear = today.getFullYear();
+          var todayMonth = today.getMonth()+1;
+          var todayDate = today.getDate();
+          var todayHour = today.getHours();
+          var todayMinute = today.getMinutes();
+          var todaySecond = today.getSeconds();
+          /* 
+          Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+          year - 作为date对象的年份，为4位年份值
+          month - 0-11之间的整数，做为date对象的月份
+          day - 1-31之间的整数，做为date对象的天数
+          hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+          minutes - 0-59之间的整数，做为date对象的分钟数
+          seconds - 0-59之间的整数，做为date对象的秒数
+          microseconds - 0-999之间的整数，做为date对象的毫秒数
+      */
+          var t1 = Date.UTC(2024,7,9,15,37,34); //北京时间2018-2-13 00:00:00
+          var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+          var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML="Poo's blog has run for "+/*diffYears+" years "+*/diffDays+" days "+diffHours+" hours "+diffMinutes+" minutes "+diffSeconds+" seconds";
+    }
+      siteTime();
+  </script>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'neutral',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
